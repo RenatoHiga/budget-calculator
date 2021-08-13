@@ -76,8 +76,6 @@ class App extends React.Component {
   }
 
   handleValueInput(event) {
-    // console.log("handling input");
-    
     // Allow only numbers and dot
     const filterNumbers = /[^0-9\.]/g;
     let newValue = event.target.value.replace(filterNumbers, '');
@@ -95,7 +93,7 @@ class App extends React.Component {
       // Remove the dot to simplify the calculation
       fullValue = newValue.replace('.', '');
 
-      if (fullValue.length >= 3) { // If its not erasing the values...
+      if (fullValue.length >= 3) { // If the user isn't erasing the values...
 
         // Make the effect of Price mask.
         if (fullValue.substr(0, 1) === '0') {
@@ -110,7 +108,7 @@ class App extends React.Component {
         this.setState({
           newProductValue: fullValue
         });
-      } else { // If it's erasing the values
+      } else { // If the user is erasing the values
         // Make the value 0.00 again
         // or format to the correct way like: 0.32 and 0.01
 
