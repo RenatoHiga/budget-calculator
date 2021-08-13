@@ -1,36 +1,15 @@
 import './App.css';
+import Input from './components/Input'
 import React from 'react';
 
-import Input from './components/Input';
-
-let cards = [
-  {
-    name: "Graphics Card",
-    value: 1000
-  }, 
-  {
-    name: "Processor",
-    value: 2500
-  }, 
-  {
-    name: "SSD (Solid State Drive)",
-    value: 1000
-  }, 
-  {
-    name: "Motherboard",
-    value: 1200
-  }
-];
-
-let totalValue = 0;
-cards.map((card) => totalValue += card.value)
-
 class App extends React.Component {
+
   constructor(props) {
     super(props);
+
     this.state = {
       newProductName: '',
-      newProductValue: '',
+      newProductValue: '0.00',
       products: [
         {
           name: "Graphics Card",
@@ -52,9 +31,15 @@ class App extends React.Component {
       totalValue: 0
     };
 
-    this.setState({
-      totalValue: totalValue
+    let products = [...this.state.products];
+    var totalValue = 0;
+
+
+    products.forEach((product) => {      
+      totalValue = totalValue + product.value
     });
+  
+    this.state.totalValue = totalValue
 
     this.handleNameInput = this.handleNameInput.bind(this);
     this.handleValueInput = this.handleValueInput.bind(this);
@@ -63,20 +48,22 @@ class App extends React.Component {
   }
 
   renderList() {
-    console.log(this.state);
-    // console.log(listItems);
     let listItems = this.state.products.map((product, index) => 
       <li key={index}>{product.name} - R$ {product.value}</li> 
     );
     return listItems
   }
 
-  addItem() {
+  addItem(event) {
+    event.preventDefault();
+
     let listItems = [...this.state.products, {name: this.state.newProductName, value: this.state.newProductValue}];
-    
-    console.log(listItems);
+    let totalValue = this.state.totalValue + parseInt(this.state.newProductValue);
+
+    // console.log(listItems);
     this.setState({
-      products: listItems
+      products: listItems,
+      totalValue: totalValue
     });
     
     
@@ -89,77 +76,93 @@ class App extends React.Component {
   }
 
   handleValueInput(event) {
-    this.setState({
-      newProductValue: event.target.value
-    })
+    // console.log("handling input");
+    
+    // Allow only numbers and dot
+    const filterNumbers = /[^0-9\.]/g;
+    let newValue = event.target.value.replace(filterNumbers, '');
+
+    // Allow only a single dot.
+    const filterDots = /[\.]/g;
+    let foundDots = event.target.value.match(filterDots);
+
+    let fullValue;
+    if (foundDots.length > 1) {
+      // If a dot has been found. 
+      // It will re-render the value to not allow a second dot
+      fullValue = this.state.newProductValue;
+    } else {
+      // Remove the dot to simplify the calculation
+      fullValue = newValue.replace('.', '');
+
+      if (fullValue.length >= 3) { // If its not erasing the values...
+
+        // Make the effect of Price mask.
+        if (fullValue.substr(0, 1) === '0') {
+          fullValue = fullValue.substr(1, fullValue.length);
+        }
+
+        let firstPart = fullValue.substr(0, fullValue.length - 2);
+        let centsPart = fullValue.substr(fullValue.length - 2, fullValue.length);
+
+        fullValue = firstPart + "." + centsPart;
+        
+        this.setState({
+          newProductValue: fullValue
+        });
+      } else { // If it's erasing the values
+        // Make the value 0.00 again
+        // or format to the correct way like: 0.32 and 0.01
+
+        let newValue = "";
+        for (let index = 1; index <= 3 - fullValue.length; index++) {
+          newValue += '0';
+        }
+
+        this.setState((state) => ({
+          newProductValue: newValue + "." + fullValue
+        }));
+      } 
+    }
   }
 
   render() {
     return (
       <div>
         <h1>
-          Hello there! I'll render a list of items and the value of each item
+          Budget Calculator
         </h1>
 
-        <Input type="text" title="Nome do Produto"/>
-        <Input type="text" title="Preço do Produto"/><br/><br/>
-        <input type="text" value={this.state.newProductName} onChange={this.handleNameInput} placeholder="Digite NOME do produto" /><br/>
-        <input type="text" value={this.state.newProductValue} onChange={this.handleValueInput} placeholder="Digite PREÇO do produto" /><br/>
-        <button onClick={this.addItem}>Add new item</button>
+        <form>
+          
+          <Input
+            title="Nome do Custo"
+            value={this.state.newProductName}
+            onChange={this.handleNameInput}
+            
+          />
 
-        <ul>
-          {this.renderList()}
-          Total Value: R$ {totalValue}
-        </ul>
+          <Input
+            title="Valor do Custo"
+            value={this.state.newProductValue}
+            onChange={this.handleValueInput}
+          />
+
+          <button onClick={this.addItem}>Add new item</button>
+        
+        </form>
+
+        <div>
+          <h2>Items list from list "Dream Gaming Setup"</h2>
+          <ul>
+            {this.renderList()}
+            Total Value: R$ {this.state.totalValue}
+          </ul>
+        </div>
+        
       </div>
     );
   }
 }
 
 export default App;
-
-
-// class Clock extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {date: new Date()};
-//   }
-
-//   componentDidMount() {
-//     this.timerID = setInterval(
-//       () => this.tick(),
-//       1000
-//     );
-//   }
-
-//   componentWillUnmount() {
-//     clearInterval(this.timerID)
-//   }
-
-//   tick() {
-//     this.setState(() => ({
-//       date: new Date()
-//     }));
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         <h1>Hello, world!</h1>
-//         <h2>The current time is {this.state.date.toLocaleTimeString()}</h2>
-//       </div>
-//     );
-//   }
-// }
-
-// function tick() {
-//   ReactDOM.render(
-//     <Clock date={new Date()} />
-//   )
-// }
-
-// class Welcome extends React.Component {
-//   render() {
-//     return <p>Hello, {this.props.name}</p>
-//   }
-// }
