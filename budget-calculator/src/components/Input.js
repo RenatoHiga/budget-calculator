@@ -10,9 +10,9 @@ class Input extends React.Component {
 
     render() {
         return (
-            <div>
-                <label>{this.props.title}:</label>
-                <input type="text" value={this.props.value} onChange={this.props.onChange} placeholder={`Digite o ${this.props.title}`} />
+            <div className="inputWrapper marginTop15">
+                <label className="inputWrapper__title">{this.props.title}:</label>
+                <input className="inputWrapper__input" type="text" value={this.props.value} onChange={this.props.onChange} placeholder={`Digite o ${this.props.title}`} />
             </div>
         );
     }

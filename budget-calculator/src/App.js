@@ -1,6 +1,8 @@
-import './App.css';
-import Input from './components/Input'
 import React from 'react';
+import './styles/style.css';
+
+import Input from './components/Input'
+
 
 class App extends React.Component {
 
@@ -85,7 +87,7 @@ class App extends React.Component {
     let foundDots = event.target.value.match(filterDots);
 
     let fullValue;
-    if (foundDots.length > 1) {
+    if (foundDots !== null && foundDots.length > 1) {
       // If a dot has been found. 
       // It will re-render the value to not allow a second dot
       fullValue = this.state.newProductValue;
@@ -96,7 +98,7 @@ class App extends React.Component {
       if (fullValue.length >= 3) { // If the user isn't erasing the values...
 
         // Make the effect of Price mask.
-        if (fullValue.substr(0, 1) === '0') {
+        if (fullValue.substr(0, 1) === '0' && fullValue.substr(0, fullValue.length) !== '000') {
           fullValue = fullValue.substr(1, fullValue.length);
         }
 
@@ -109,16 +111,19 @@ class App extends React.Component {
           newProductValue: fullValue
         });
       } else { // If the user is erasing the values
-        // Make the value 0.00 again
-        // or format to the correct way like: 0.32 and 0.01
-
-        let newValue = "";
+        // Make the default value (0.00) again
+        // or format the value. Examples: 0.32 and 0.01
+        
+        let abscentZeros = "";
         for (let index = 1; index <= 3 - fullValue.length; index++) {
-          newValue += '0';
+          abscentZeros += '0';
         }
 
+        let newValue = abscentZeros + fullValue;
+        newValue = newValue.substr(0, (newValue.length - 2)) + "." + newValue.substr(1, 2);
+
         this.setState((state) => ({
-          newProductValue: newValue + "." + fullValue
+          newProductValue: newValue
         }));
       } 
     }
@@ -126,13 +131,15 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>
+      <div className="mainContent">
+        <h1 className="mainContent__title">
           Budget Calculator
         </h1>
 
         <form>
           
+          <h2 className="textAlignCenter">Adicionar Custo</h2>
+
           <Input
             title="Nome do Custo"
             value={this.state.newProductName}
@@ -146,10 +153,10 @@ class App extends React.Component {
             onChange={this.handleValueInput}
           />
 
-          <button onClick={this.addItem}>Add new item</button>
+          <button className="button marginTop15" onClick={this.addItem}>Add new item</button>
         
         </form>
-
+        
         <div>
           <h2>Items list from list "Dream Gaming Setup"</h2>
           <ul>
