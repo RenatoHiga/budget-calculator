@@ -156,7 +156,196 @@ class App extends React.Component {
           <button className="button marginTop15" onClick={this.addItem}>Add new item</button>
         
         </form>
-        
+
+        <ul className="costsList">
+
+          <div className="totalCost textAlignCenter">
+            <span className="totalCost__title">Custo Total:</span><br/>
+            <span className="totalCost__value">R$ 8000.00</span>
+          </div>
+
+          <div className="costsList__row">
+            
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+            <li className="costItem">
+              <span className="costItem__image">
+                Image
+              </span>
+
+              <div className="costItem__description">
+                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+                <p className="costItem__price">R$ 2000.00</p>
+              </div>
+            </li>
+
+          </div>
+
+          {/* <li className="costItem">
+            <span className="costItem__image">
+              Image
+            </span>
+
+            <div className="costItem__description">
+              <p className="costItem__name">Cadeira Gamer X 123-OU</p>
+              <p className="costItem__price">R$ 2000.00</p>
+            </div>
+          </li> */}
+
+        </ul>
+
         <div>
           <h2>Items list from list "Dream Gaming Setup"</h2>
           <ul>

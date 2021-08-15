@@ -55,4 +55,50 @@
   font-size: 1rem;
 }
 
+.costsList {
+  height: 100%;
+  padding: 20px 20px 20px 20px;
+  background-color: #C4C4C4;
+  list-style: none;
+}
+
+.costsList__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (min-width: 490px) {
+  .costsList__row {
+    justify-content: space-between;
+  }
+}
+.costItem {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #EFEFEF;
+}
+
+.costItem__image {
+  display: block;
+  width: 105px;
+  height: 105px;
+  margin-right: 5px;
+  background: #C4C4C4;
+}
+
+.costItem__description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.costItem__price {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
 /*# sourceMappingURL=style.css.map */
