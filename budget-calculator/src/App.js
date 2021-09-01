@@ -15,19 +15,19 @@ class App extends React.Component {
       products: [
         {
           name: "Graphics Card",
-          value: 1000
+          value: 100000
         }, 
         {
           name: "Processor",
-          value: 2500
+          value: 250000
         }, 
         {
           name: "SSD (Solid State Drive)",
-          value: 1000
+          value: 100000
         }, 
         {
           name: "Motherboard",
-          value: 1200
+          value: 120000
         }
       ],
       totalValue: 0,
