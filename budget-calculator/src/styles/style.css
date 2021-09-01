@@ -6,6 +6,18 @@
   font-family: "Roboto", sans-serif;
 }
 
+html, body {
+  height: 100vh;
+}
+
+.root {
+  height: 100%;
+}
+
+.rootBody {
+  height: 100%;
+}
+
 .marginTop15 {
   margin-top: 15px;
 }
@@ -14,9 +26,14 @@
   text-align: center;
 }
 
+.hidden {
+  display: none;
+}
+
 .mainContent {
   display: flex;
   flex-direction: column;
+  height: 100%;
   padding: 30px;
   margin: 0 auto;
 }
@@ -28,6 +45,29 @@
 @media (min-width: 1024px) {
   .mainContent {
     max-width: 1024px;
+  }
+}
+.modalAddCard--open {
+  display: block;
+}
+
+.modalAddCard--closed {
+  display: none;
+}
+
+.modalAddCard {
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  position: absolute;
+  top: 0;
+  background-color: #ffffff;
+}
+
+@media (min-width: 1024px) {
+  .modalAddCard__form {
+    max-width: 1024px;
+    margin: 0 auto;
   }
 }
 .inputWrapper {
@@ -57,25 +97,39 @@
 
 .costsList {
   height: 100%;
+  min-height: 280px;
+  max-height: 60vh;
   padding: 20px 20px 20px 20px;
   background-color: #C4C4C4;
   list-style: none;
+  overflow-y: scroll;
+}
+
+.totalCost__title {
+  font-weight: 300;
+}
+
+.totalCost__value {
+  font-weight: 700;
+  font-size: 1.375rem;
 }
 
 .costsList__row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
 }
 
-@media (min-width: 490px) {
+@media (max-width: 425px) {
   .costsList__row {
-    justify-content: space-between;
+    justify-content: space-evenly;
   }
 }
 .costItem {
   display: flex;
   flex-direction: column;
+  width: 125px;
+  max-height: 200px;
   margin-top: 10px;
   padding: 10px;
   background-color: #EFEFEF;
@@ -83,7 +137,7 @@
 
 .costItem__image {
   display: block;
-  width: 105px;
+  width: 100%;
   height: 105px;
   margin-right: 5px;
   background: #C4C4C4;
@@ -99,6 +153,16 @@
 .costItem__price {
   font-size: 1.125rem;
   font-weight: 700;
+}
+
+.addCostButton {
+  padding: 10px 0px;
+  border: 0;
+  border-radius: 3px;
+  outline: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

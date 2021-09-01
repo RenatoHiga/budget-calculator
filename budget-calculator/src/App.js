@@ -1,14 +1,14 @@
 import React from 'react';
 import './styles/style.css';
 
-import Input from './components/Input'
-
+import ModalAddCard from './components/ModalAddCard';
+import CardCost from './components/CardCost';
 
 class App extends React.Component {
 
   constructor(props) {
     super(props);
-
+    console.log("app constructor");
     this.state = {
       newProductName: '',
       newProductValue: '0.00',
@@ -30,7 +30,8 @@ class App extends React.Component {
           value: 1200
         }
       ],
-      totalValue: 0
+      totalValue: 0,
+      modalIsVisible: false
     };
 
     let products = [...this.state.products];
@@ -47,20 +48,27 @@ class App extends React.Component {
     this.handleValueInput = this.handleValueInput.bind(this);
     this.addItem = this.addItem.bind(this);
     this.renderList = this.renderList.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   renderList() {
     let listItems = this.state.products.map((product, index) => 
-      <li key={index}>{product.name} - R$ {product.value}</li> 
+      <CardCost index={index} name={product.name} price={product.value}/>
     );
-    return listItems
+    return listItems;
   }
 
   addItem(event) {
     event.preventDefault();
 
-    let listItems = [...this.state.products, {name: this.state.newProductName, value: this.state.newProductValue}];
-    let totalValue = this.state.totalValue + parseInt(this.state.newProductValue);
+    // Removes the . (dot) from the string, then transform it into an INT
+    let newProductValue = this.state.newProductValue.split('.');
+    newProductValue = newProductValue.join('');
+    newProductValue = parseInt(newProductValue);
+    
+    let listItems = [...this.state.products, {name: this.state.newProductName, value: newProductValue}];
+    let totalValue = this.state.totalValue + newProductValue;
 
     // console.log(listItems);
     this.setState({
@@ -68,6 +76,7 @@ class App extends React.Component {
       totalValue: totalValue
     });
     
+    console.log(this.state);
     
   }
 
@@ -129,231 +138,73 @@ class App extends React.Component {
     }
   }
 
+  openModal() { console.log("openModal()");
+    this.setState({
+      modalIsVisible: true
+    });
+  }
+
+  closeModal() { console.log("closeModal()");
+    this.setState({
+      modalIsVisible: false
+    })
+  }
+
+  formatPrice(price) {
+    price = price.toString();
+
+    let reals = price.substr(0, (price.length - 2));
+    let cents = price.substr((price.length - 2), 2);
+
+    let formattedPrice = `${reals}.${cents}`;
+
+    return formattedPrice;
+  }
+
   render() {
+    let modal;
+
+    if (this.state.modalIsVisible) {
+      modal = <ModalAddCard 
+        close={this.closeModal}
+        productName={this.state.newProductName}
+        productNameHandler={this.handleNameInput}
+        productValue={this.state.newProductValue}
+        productValueHandler={this.handleValueInput}
+        addCardHandler={this.addItem}
+      />
+    } else {
+      modal = ""
+    }
+
     return (
-      <div className="mainContent">
-        <h1 className="mainContent__title">
-          Budget Calculator
-        </h1>
+      <div className="rootBody">
 
-        <form>
-          
-          <h2 className="textAlignCenter">Adicionar Custo</h2>
+        {modal}
 
-          <Input
-            title="Nome do Custo"
-            value={this.state.newProductName}
-            onChange={this.handleNameInput}
-            
-          />
+        <div className="mainContent">
+          <h1 className="mainContent__title">
+            Budget Calculator
+          </h1>
 
-          <Input
-            title="Valor do Custo"
-            value={this.state.newProductValue}
-            onChange={this.handleValueInput}
-          />
+          <ul className="costsList marginTop15">
 
-          <button className="button marginTop15" onClick={this.addItem}>Add new item</button>
-        
-        </form>
-
-        <ul className="costsList">
-
-          <div className="totalCost textAlignCenter">
-            <span className="totalCost__title">Custo Total:</span><br/>
-            <span className="totalCost__value">R$ 8000.00</span>
-          </div>
-
-          <div className="costsList__row">
-            
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-            <li className="costItem">
-              <span className="costItem__image">
-                Image
-              </span>
-
-              <div className="costItem__description">
-                <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-                <p className="costItem__price">R$ 2000.00</p>
-              </div>
-            </li>
-
-          </div>
-
-          {/* <li className="costItem">
-            <span className="costItem__image">
-              Image
-            </span>
-
-            <div className="costItem__description">
-              <p className="costItem__name">Cadeira Gamer X 123-OU</p>
-              <p className="costItem__price">R$ 2000.00</p>
+            <div className="totalCost textAlignCenter">
+              <span className="totalCost__title">Custo Total:</span><br/>
+              <span className="totalCost__value">R$ {this.formatPrice(this.state.totalValue)}</span>
             </div>
-          </li> */}
 
-        </ul>
+            <div className="costsList__row">
+              
+              {this.renderList()}
 
-        <div>
-          <h2>Items list from list "Dream Gaming Setup"</h2>
-          <ul>
-            {this.renderList()}
-            Total Value: R$ {this.state.totalValue}
+            </div>
+
           </ul>
+          
+          <button className="addCostButton marginTop15" onClick={this.openModal}>Adicionar custo</button>
         </div>
-        
+  
       </div>
     );
   }
