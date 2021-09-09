@@ -6,50 +6,66 @@ import CardCost from './components/CardCost';
 
 class App extends React.Component {
 
+  async getCosts() {
+    return await fetch('http://127.0.0.1:3001/costs-lists')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({products: data[0].costs})
+
+        // Separate this onto a function
+        let products = data[0].costs;
+        var totalValue = 0;
+    
+        products.forEach((product) => {      
+          totalValue = totalValue + product.value
+        });
+        // end
+      
+        this.setState({totalValue: totalValue});
+      })
+    .catch(console.error)
+  }
+
   constructor(props) {
     super(props);
-    console.log("app constructor");
+
     this.state = {
       newProductName: '',
       newProductValue: '0.00',
-      products: [
-        {
-          name: "Graphics Card",
-          value: 100000
-        }, 
-        {
-          name: "Processor",
-          value: 250000
-        }, 
-        {
-          name: "SSD (Solid State Drive)",
-          value: 100000
-        }, 
-        {
-          name: "Motherboard",
-          value: 120000
-        }
-      ],
+      products: [],
+      // products: [
+      //   {
+      //     name: "Graphics Card",
+      //     value: 100000
+      //   }, 
+      //   {
+      //     name: "Processor",
+      //     value: 250000
+      //   }, 
+      //   {
+      //     name: "SSD (Solid State Drive)",
+      //     value: 100000
+      //   }, 
+      //   {
+      //     name: "Motherboard",
+      //     value: 120000
+      //   }
+      // ],
       totalValue: 0,
       modalIsVisible: false
     };
-
-    let products = [...this.state.products];
-    var totalValue = 0;
-
-
-    products.forEach((product) => {      
-      totalValue = totalValue + product.value
-    });
   
-    this.state.totalValue = totalValue
-
     this.handleNameInput = this.handleNameInput.bind(this);
     this.handleValueInput = this.handleValueInput.bind(this);
     this.addItem = this.addItem.bind(this);
     this.renderList = this.renderList.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+  }
+
+  componentDidMount() {
+    this.getCosts();
+    this.setTotalValue(this.state);
   }
 
   renderList() {
@@ -75,8 +91,6 @@ class App extends React.Component {
       products: listItems,
       totalValue: totalValue
     });
-    
-    console.log(this.state);
     
   }
 
