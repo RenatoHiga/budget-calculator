@@ -18,6 +18,10 @@ html, body {
   height: 100%;
 }
 
+.lightText {
+  color: white;
+}
+
 .marginTop15 {
   margin-top: 15px;
 }
@@ -26,15 +30,116 @@ html, body {
   text-align: center;
 }
 
+.showBlock {
+  display: block;
+}
+
 .hidden {
   display: none;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  padding: 15px;
+  position: absolute;
+  background-color: #7F7F7F;
+}
+
+.navbar__titleWrapper {
+  width: 100%;
+}
+
+.navbar__title {
+  text-align: center;
+}
+
+.menuButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+}
+
+.menuButton__bar {
+  display: block;
+  height: 4px;
+  background-color: #fff;
+}
+
+.navbarMenu {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+}
+
+.navbarMenu--opened {
+  display: block;
+}
+
+.navbarMenu--closed {
+  display: none;
+}
+
+.navbarMenu__overlay {
+  height: 100%;
+  background-color: rgba(127, 127, 127, 0.6);
+}
+
+.navbarMenu__optionsList {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  height: 100%;
+  border-right: 1px solid #fff;
+  background-color: #7F7F7F;
+}
+
+.navbarMenu__option {
+  padding: 15px;
+  border-bottom: 1px solid #fff;
+}
+
+.listsNotFoundWarning {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.listsNotFoundWarning--visible {
+  display: flex;
+}
+
+.listsNotFoundWarning--hidden {
+  display: none;
+}
+
+.listsNotFoundWarning__title {
+  text-align: center;
+}
+
+.listsNotFoundWarning__description {
+  text-align: center;
+}
+
+.listsNotFoundWarning__addListButton {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  margin: 15px auto 0 auto;
+  border: 0;
+  background-color: #C4C4C4;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .mainContent {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 30px;
+  padding: 58px 0 0 0;
   margin: 0 auto;
 }
 
@@ -42,30 +147,34 @@ html, body {
   text-align: center;
 }
 
-@media (min-width: 1024px) {
-  .mainContent {
-    max-width: 1024px;
-  }
-}
-.modalAddCard--open {
+.modal--open {
   display: block;
 }
 
-.modalAddCard--closed {
+.modal--closed {
   display: none;
 }
 
-.modalAddCard {
+.modal {
   width: 100%;
   height: 100%;
   padding: 30px;
   position: absolute;
   top: 0;
-  background-color: #ffffff;
+  z-index: 1;
+  background-color: #7F7F7F;
+}
+
+.modal__header {
+  display: flex;
+}
+
+.modal__headerTitle {
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
-  .modalAddCard__form {
+  .modal__form {
     max-width: 1024px;
     margin: 0 auto;
   }
@@ -77,6 +186,7 @@ html, body {
 
 .inputWrapper__label {
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .inputWrapper__input {
@@ -95,14 +205,117 @@ html, body {
   font-size: 1rem;
 }
 
-.costsList {
+.listsContainer {
+  display: flex;
+  width: 100vw;
   height: 100%;
-  min-height: 280px;
-  max-height: 60vh;
-  padding: 20px 20px 20px 20px;
+  overflow-y: scroll;
+}
+
+.costsListWrapper {
+  padding: 10px;
+}
+
+.costsListWrapper--first {
+  padding: 10px 0 10px 20px;
+}
+
+.costsListWrapper--last {
+  padding: 10px 20px 10px 0px;
+}
+
+.costsList {
+  display: flex;
+  flex-direction: column;
+  width: calc(100vw - 40px);
+  border-radius: 10px;
+  position: relative;
   background-color: #C4C4C4;
   list-style: none;
+}
+
+.costsList--addNewList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: calc(100vw - 40px);
+  height: 100%;
+  min-height: 360px;
+  border-radius: 10px;
+  background-color: #C4C4C4;
+}
+
+.costsList__iconNewList {
+  display: block;
+  height: 73px;
+  width: 73px;
+}
+
+.costsList__headers {
+  padding: 10px 10px 10px 10px;
+}
+
+.cardsCostsList {
+  padding: 0 10px 58px 10px;
   overflow-y: scroll;
+}
+
+.cardsCostsList__cardsList {
+  min-height: 200px;
+  height: 100%;
+  padding: 10px 10px 0 10px;
+  border-radius: 10px;
+  position: relative;
+  overflow-y: scroll;
+  background-color: #ABABAB;
+  list-style: none;
+}
+
+.emptyCardsCostsListWarning {
+  text-align: center;
+}
+
+.emptyCardsCostsListWarning--hidden {
+  display: none;
+}
+
+.emtpyCardsCostsListWarning--visible {
+  display: block;
+}
+
+.costsList__addCostButton {
+  padding: 10px 0;
+  border: 0;
+  border-radius: 0 0 10px 10px;
+  background-color: #808080;
+}
+
+.cardCost {
+  display: block;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: #939393;
+}
+
+.cardCost__title {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.cardCost__value {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.totalCost {
+  display: block;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 45px;
+  text-align: center;
 }
 
 .totalCost__title {

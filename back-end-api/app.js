@@ -6,8 +6,14 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/BudgetCalculator');
 
 app.use(function (req, res, next) {
-    // Allow http://127.0.0.1:3000 (React.js project) to use the API
-    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000')
+    // Allow http://127.0.0.1:3000 and http://localhost:3000 for the (React.js project) to use the API
+    const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000'];
+    const origin = req.headers.origin;
+    console.log(origin);
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
     // After allowing the React.js project, proceed to the wanted Route

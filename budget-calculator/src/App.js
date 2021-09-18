@@ -1,7 +1,8 @@
 import React from 'react';
 import './styles/style.css';
+import addListIcon from './images/icons/addList.svg';
 
-import ModalAddCard from './components/ModalAddCard';
+import Modal from './components/Modal';
 import CardCost from './components/CardCost';
 
 class App extends React.Component {
@@ -65,7 +66,6 @@ class App extends React.Component {
 
   componentDidMount() {
     this.getCosts();
-    this.setTotalValue(this.state);
   }
 
   renderList() {
@@ -152,13 +152,13 @@ class App extends React.Component {
     }
   }
 
-  openModal() { console.log("openModal()");
+  openModal() {
     this.setState({
       modalIsVisible: true
     });
   }
 
-  closeModal() { console.log("closeModal()");
+  closeModal() {
     this.setState({
       modalIsVisible: false
     })
@@ -179,13 +179,13 @@ class App extends React.Component {
     let modal;
 
     if (this.state.modalIsVisible) {
-      modal = <ModalAddCard 
+      modal = <Modal 
         close={this.closeModal}
-        productName={this.state.newProductName}
-        productNameHandler={this.handleNameInput}
-        productValue={this.state.newProductValue}
-        productValueHandler={this.handleValueInput}
-        addCardHandler={this.addItem}
+        inputs={[
+          {title: "Nome do Custo", value: this.state.newProductName, handler: this.handleNameInput},
+          {title: "Valor do Custo", value: this.state.newProductValue, handler: this.handleValueInput}
+        ]}
+        buttonHandler={this.addItem}
       />
     } else {
       modal = ""
@@ -194,14 +194,172 @@ class App extends React.Component {
     return (
       <div className="rootBody">
 
+        <Modal 
+          close={this.closeModal}
+          inputs={[
+            {title: "Nome do Custo", value: this.state.newProductName, handler: this.handleNameInput},
+            {title: "Valor do Custo", value: this.state.newProductValue, handler: this.handleValueInput}
+          ]}
+          buttonHandler={this.addItem}
+        />
+
         {modal}
 
-        <div className="mainContent">
-          <h1 className="mainContent__title">
-            Budget Calculator
-          </h1>
+        <nav className="navbar">
 
-          <ul className="costsList marginTop15">
+          <div className="menuButton">
+            <div className="menuButton__bar"></div>
+            <div className="menuButton__bar"></div>
+            <div className="menuButton__bar"></div>
+          </div>
+
+          <div className="navbar__titleWrapper">
+            <h1 className="navbar__title lightText">Budget Calculator</h1>
+          </div>
+          
+        </nav>
+
+
+        <div className="navbarMenu hidden">
+          
+          <div className="navbarMenu__overlay">
+
+            <ul className="navbarMenu__optionsList">
+              <li className="navbarMenu__option"> {/*Close*/}</li>
+              <li className="navbarMenu__option">Add new list</li>
+              <li className="navbarMenu__option">Update list</li>
+              <li className="navbarMenu__option">Delete list</li>
+            </ul>
+
+
+          </div>
+        
+        </div>        
+
+
+        <div className="mainContent">
+          
+          <div className="listsNotFoundWarning listsNotFoundWarning--hidden">
+            <div className="listsNotFoundWarning__wrapper">
+              <h1 className="listsNotFoundWarning__title">Whoops! 😅</h1>
+              <p className="listsNotFoundWarning__description">
+                You don't have any created lists yet.<br />
+                To create a new costs list,<br />
+                you need to press the button below or<br />
+                press the button the left of your screen!<br />
+              </p>
+
+              <button className="listsNotFoundWarning__addListButton">
+                ADD CARD
+              </button>
+            </div>
+          </div>
+          
+
+          <div className="listsContainer">
+
+            <div className="costsListWrapper costsListWrapper--first">
+              <div className="costsList--addNewList">
+                <img src={addListIcon} className="costsList__iconNewList" />
+                <h1 className="textAlignCenter">Add new list</h1>
+              </div>
+            </div>
+
+            <div className="costsListWrapper">
+
+              <div className="costsList">
+
+                <div className="costsList__headers">
+                  <h1 className="textAlignCenter">Gaming PC</h1>
+                  <p className="">A very powerful Gaming PC capable of running games like... Show more</p>
+                </div>
+
+                <div className="cardsCostsList">
+                  <ul className="cardsCostsList__cardsList">
+                    <li className="emptyCardsCostsListWarning emptyCardsCostsListWarning--hidden">
+                      <h1>Your list is empty!</h1>
+                      <p>To add a cost, you must press the button "ADD COST" below this list</p>
+                    </li>
+  
+                    <li className="cardCost">
+                      <h2 className="cardCost__title">RTX 3060 TI</h2>
+                      <h3 className="cardCost__value">R$ 6500.00</h3>
+                    </li>
+
+                    <li className="cardCost">
+                      <h2 className="cardCost__title">RTX 3060 TI</h2>
+                      <h3 className="cardCost__value">R$ 6500.00</h3>
+                    </li>
+                    <li className="cardCost">
+                      <h2 className="cardCost__title">RTX 3060 TI</h2>
+                      <h3 className="cardCost__value">R$ 6500.00</h3>
+                    </li>
+                    <li className="cardCost">
+                      <h2 className="cardCost__title">RTX 3060 TI</h2>
+                      <h3 className="cardCost__value">R$ 6500.00</h3>
+                    </li>
+                    <li className="cardCost">
+                      <h2 className="cardCost__title">RTX 3060 TI</h2>
+                      <h3 className="cardCost__value">R$ 6500.00</h3>
+                    </li>
+                    <li className="cardCost">
+                      <h2 className="cardCost__title">RTX 3060 TI</h2>
+                      <h3 className="cardCost__value">R$ 6500.00</h3>
+                    </li>
+                    <li className="cardCost">
+                      <h2 className="cardCost__title">RTX 3060 TI</h2>
+                      <h3 className="cardCost__value">R$ 6500.00</h3>
+                    </li>
+
+                    
+                    
+                  </ul>
+                </div>
+
+                <span className="totalCost">
+                  <p className="totalCost__title">Total Cost:</p>
+                  <p className="totalCost__value">R$ 45000.00</p>
+                </span>
+
+                <button className="costsList__addCostButton">ADD COST</button>
+
+              </div>
+
+            </div>
+
+            <div className="costsListWrapper costsListWrapper--last">
+
+              <div className="costsList">
+
+                <div className="costsList__headers">
+                  <h1 className="textAlignCenter">Gaming PC</h1>
+                  <p className="">A very powerful Gaming PC capable of running games like... Show more</p>
+                </div>
+
+                <div className="cardsCostsList">
+                  <ul className="cardsCostsList__cardsList">
+                    <li className="emptyCardsCostsListWarning emptyCardsCostsListWarning--visible">
+                      <h1>Your list is empty!</h1>
+                      <p>To add a cost, you must press the button "ADD COST" below this list</p>
+                    </li>
+                  </ul>
+                </div>
+
+                <span className="totalCost">
+                  <p className="totalCost__title">Total Cost:</p>
+                  <p className="totalCost__value">R$ 0.00</p>
+                </span>
+
+                <button className="costsList__addCostButton">ADD COST</button>
+
+              </div>
+
+            </div>
+
+
+          </div>
+          
+          {/* <ul className="costsList marginTop15">
 
             <div className="totalCost textAlignCenter">
               <span className="totalCost__title">Custo Total:</span><br/>
@@ -216,7 +374,7 @@ class App extends React.Component {
 
           </ul>
           
-          <button className="addCostButton marginTop15" onClick={this.openModal}>Adicionar custo</button>
+          <button className="addCostButton marginTop15" onClick={this.openModal}>Adicionar custo</button> */}
         </div>
   
       </div>
