@@ -3,7 +3,7 @@ import './styles/style.css';
 import addListIcon from './images/icons/addList.svg';
 
 import Modal from './components/Modal';
-import CardCost from './components/CardCost';
+import CostsList from './components/CostsList';
 
 class App extends React.Component {
 
@@ -31,48 +31,109 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      newListName: "",
+      newListDescription: "",
       newProductName: '',
       newProductValue: '0.00',
-      products: [],
-      // products: [
-      //   {
-      //     name: "Graphics Card",
-      //     value: 100000
-      //   }, 
-      //   {
-      //     name: "Processor",
-      //     value: 250000
-      //   }, 
-      //   {
-      //     name: "SSD (Solid State Drive)",
-      //     value: 100000
-      //   }, 
-      //   {
-      //     name: "Motherboard",
-      //     value: 120000
-      //   }
-      // ],
+      costsLists: [
+        {
+          name: "Gamer PC",
+          description: "A very powerful Gaming PC capable of running games like... Show more",
+          costs: [
+            {
+              name: "Graphics Card",
+              value: 100000
+            },
+            {
+              name: "Processor",
+              value: 250000
+            }
+          ]
+        },
+        {
+          name: "Chocolate Cake",
+          description: "Recipe for a simple, but delicious chocolate cake for the... Show more",
+          costs: [
+            {
+              name: "Eggs",
+              value: 30
+            },
+            {
+              name: "Flour",
+              value: 1
+            }
+          ]
+        }
+      ],
       totalValue: 0,
-      modalIsVisible: false
+      modalIsVisible: false,
+      modalType: "newList",
     };
   
+    this.handleNewListName = this.handleNewListName.bind(this);
+    this.handleNewListDescription = this.handleNewListDescription.bind(this);
+    this.addNewList = this.addNewList.bind(this);
+    this.emptyNewListInputs = this.emptyNewListInputs.bind(this);
     this.handleNameInput = this.handleNameInput.bind(this);
     this.handleValueInput = this.handleValueInput.bind(this);
     this.addItem = this.addItem.bind(this);
-    this.renderList = this.renderList.bind(this);
+    this.renderCostsLists = this.renderCostsLists.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.openNewCostCardModal = this.openNewCostCardModal.bind(this);
+    this.openNewListModal = this.openNewListModal.bind(this);
   }
 
   componentDidMount() {
-    this.getCosts();
+    // this.getCosts();
   }
 
-  renderList() {
-    let listItems = this.state.products.map((product, index) => 
-      <CardCost index={index} name={product.name} price={product.value}/>
+  renderCostsLists() {
+    let listItems = this.state.costsLists.map((list, index) => 
+      <CostsList
+        name={list.name}
+        description={list.description}
+        costs={list.costs}
+        openModalHandler={this.openNewCostCardModal}
+      />
     );
+
     return listItems;
+  }
+
+  addNewList() {
+    let currentCostsLists = [...this.state.costsLists];
+    let newCostsList = {
+      name: this.state.newListName,
+      description: this.state.newListDescription,
+      costs: []
+    };
+
+    currentCostsLists.push(newCostsList);
+    this.setState({
+      costsLists: currentCostsLists
+    });
+
+    this.emptyNewListInputs();
+  }
+
+  emptyNewListInputs() {
+    this.setState({
+      newListName: "",
+      newListDescription: ""
+    })
+  }
+
+  handleNewListName(event) {
+    this.setState({
+      newListName: event.target.value
+    })
+  }
+
+  handleNewListDescription(event) {
+    this.setState({
+      newListDescription: event.target.value
+    })
   }
 
   addItem(event) {
@@ -86,7 +147,6 @@ class App extends React.Component {
     let listItems = [...this.state.products, {name: this.state.newProductName, value: newProductValue}];
     let totalValue = this.state.totalValue + newProductValue;
 
-    // console.log(listItems);
     this.setState({
       products: listItems,
       totalValue: totalValue
@@ -164,44 +224,53 @@ class App extends React.Component {
     })
   }
 
-  formatPrice(price) {
-    price = price.toString();
+  openNewListModal() {
+    this.setState({
+      modalType: 'newList'
+    });
+    this.openModal(); 
+  }
 
-    let reals = price.substr(0, (price.length - 2));
-    let cents = price.substr((price.length - 2), 2);
-
-    let formattedPrice = `${reals}.${cents}`;
-
-    return formattedPrice;
+  openNewCostCardModal() {
+    this.setState({
+      modalType: 'newCostCard'
+    });
+    this.openModal();
   }
 
   render() {
     let modal;
 
     if (this.state.modalIsVisible) {
-      modal = <Modal 
-        close={this.closeModal}
-        inputs={[
-          {title: "Nome do Custo", value: this.state.newProductName, handler: this.handleNameInput},
-          {title: "Valor do Custo", value: this.state.newProductValue, handler: this.handleValueInput}
-        ]}
-        buttonHandler={this.addItem}
-      />
+
+      if (this.state.modalType === 'newCostCard') {
+        modal = <Modal 
+          title="Add new cost"
+          inputs={[
+            {title: "Cost name", value: this.state.newProductName, type: "text", handler: this.handleNameInput},
+            {title: "Cost value", value: this.state.newProductValue, type: "text", handler: this.handleValueInput}
+          ]}
+          close={this.closeModal}
+          button={{ name: "ADD COST", handler: this.addItem}}
+        />
+      } else if (this.state.modalType === 'newList') {
+        modal = <Modal 
+          title="Add new list"
+          inputs={[
+            {title: "List name", value: this.state.newListName, type: "text", handler: this.handleNewListName},
+            {title: "List description", value: this.state.newListDescription, type: "textarea", handler: this.handleNewListDescription}
+          ]}
+          close={this.closeModal}
+          button={{name: "ADD LIST", handler: this.addNewList}}
+        />
+      }
+      
     } else {
       modal = ""
     }
 
     return (
       <div className="rootBody">
-
-        <Modal 
-          close={this.closeModal}
-          inputs={[
-            {title: "Nome do Custo", value: this.state.newProductName, handler: this.handleNameInput},
-            {title: "Valor do Custo", value: this.state.newProductValue, handler: this.handleValueInput}
-          ]}
-          buttonHandler={this.addItem}
-        />
 
         {modal}
 
@@ -258,14 +327,16 @@ class App extends React.Component {
 
           <div className="listsContainer">
 
-            <div className="costsListWrapper costsListWrapper--first">
-              <div className="costsList--addNewList">
+            {this.renderCostsLists()}
+
+            <div className="costsListWrapper costsListWrapper--last">
+              <a className="costsList--addNewList" href="#" onClick={this.openNewListModal}>
                 <img src={addListIcon} className="costsList__iconNewList" />
                 <h1 className="textAlignCenter">Add new list</h1>
-              </div>
+              </a>
             </div>
 
-            <div className="costsListWrapper">
+            {/* <div className="costsListWrapper">
 
               <div className="costsList">
 
@@ -321,7 +392,7 @@ class App extends React.Component {
                   <p className="totalCost__value">R$ 45000.00</p>
                 </span>
 
-                <button className="costsList__addCostButton">ADD COST</button>
+                <button className="costsList__addCostButton" onClick={this.openNewCostCardModal}>ADD COST</button>
 
               </div>
 
@@ -354,27 +425,10 @@ class App extends React.Component {
 
               </div>
 
-            </div>
-
+            </div> */}
 
           </div>
           
-          {/* <ul className="costsList marginTop15">
-
-            <div className="totalCost textAlignCenter">
-              <span className="totalCost__title">Custo Total:</span><br/>
-              <span className="totalCost__value">R$ {this.formatPrice(this.state.totalValue)}</span>
-            </div>
-
-            <div className="costsList__row">
-              
-              {this.renderList()}
-
-            </div>
-
-          </ul>
-          
-          <button className="addCostButton marginTop15" onClick={this.openModal}>Adicionar custo</button> */}
         </div>
   
       </div>

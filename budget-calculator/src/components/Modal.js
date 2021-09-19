@@ -20,6 +20,7 @@ class Modal extends React.Component {
                 title={input.title}
                 value={input.value}
                 onChange={input.handler}
+                type={input.type}
             />
         )
 
@@ -28,18 +29,17 @@ class Modal extends React.Component {
 
     render() {
         return (
-            <div className='modal modal--closed'>
+            <div className='modal'>
                 <form className="modal__form">
                     
-                    
                     <div className="modal__header">
-                        <h2 className="modal__headerTitle textAlignCenter">Add new list</h2>
+                        <h2 className="modal__headerTitle textAlignCenter lightText">{this.props.title}</h2>
                         <img src={closeIcon} alt="Fechar" onClick={this.props.close}/>
                     </div>
 
                     {this.renderInputs()}
 
-                    <button className="button marginTop15" onClick={this.props.buttonHandler}>Add new item</button>
+                    <button className="modal__button marginTop15" onClick={this.props.button.handler}>{this.props.button.name}</button>
                 </form>
             </div>
         );

@@ -224,12 +224,24 @@ html, body {
     background-color: #EFEFEF;
 }
 
+.inputWrapper__inputTextArea {
+min-width: 100%;
+max-width: 100%;
+min-height: 125px;
+font-size: 1rem;
+padding: 10px;
+border: 0;
+outline: none;
+border-radius: 3px;
+background-color: #EFEFEF;
+}
 
 
-.button {
+.modal__button {
     width: 100%;
     padding: 10px;
-    border: 0px;
+    border: 0;
+    border-radius: 3px;
 
     font-size: 1rem;
 }
@@ -284,7 +296,11 @@ html, body {
 
     border-radius: 10px;
 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.28);
     background-color: #C4C4C4;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+    color: black;
 }
 
 .costsList__iconNewList {
