@@ -10,7 +10,7 @@ class Input extends React.Component {
 
         let input;
 
-        if (this.props.type == "textarea") {
+        if (this.props.type === "textarea") {
             input = <textarea className="inputWrapper__inputTextArea" rows="5" value={this.props.value} onChange={this.props.onChange} placeholder={`Write the ${this.props.title}`} />
         } else {
             input = <input className="inputWrapper__input" type="text" value={this.props.value} onChange={this.props.onChange} placeholder={`Write the ${this.props.title}`} />

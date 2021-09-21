@@ -36,7 +36,7 @@ class CostsList extends React.Component {
 
     renderCards(cards) {
 
-        const cardsListIsEmpty = cards.length == 0;
+        const cardsListIsEmpty = cards.length === 0;
 
         if (cardsListIsEmpty) {
             cards = (
@@ -58,8 +58,15 @@ class CostsList extends React.Component {
     }
 
     render() {
+        let styleClassName;
+        if (this.props.index === 0) {
+            styleClassName = "costsListWrapper costsListWrapper--first";
+        } else {
+            styleClassName = "costsListWrapper"
+        }
+
         return (
-            <div className="costsListWrapper costsListWrapper">
+            <div className={styleClassName}>
 
                 <div className="costsList">
 
@@ -81,7 +88,10 @@ class CostsList extends React.Component {
                         <p className="totalCost__value">R$ {this.calculateTotalListCost(this.props.costs)}</p>
                     </span>
 
-                    <button className="costsList__addCostButton" onClick={this.props.openModalHandler}>ADD COST</button>
+                    <button className="costsList__addCostButton" onClick={(event) => {
+                        event.preventDefault();
+                        this.props.openModalHandler(this.props.id)
+                    }}>ADD COST</button>
 
                 </div>
 

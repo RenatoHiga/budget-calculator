@@ -33,10 +33,11 @@ class App extends React.Component {
     this.state = {
       newListName: "",
       newListDescription: "",
-      newProductName: '',
-      newProductValue: '0.00',
+      newCostName: '',
+      newCostValue: '0.00',
       costsLists: [
         {
+          id: 1,
           name: "Gamer PC",
           description: "A very powerful Gaming PC capable of running games like... Show more",
           costs: [
@@ -51,6 +52,7 @@ class App extends React.Component {
           ]
         },
         {
+          id: 2,
           name: "Chocolate Cake",
           description: "Recipe for a simple, but delicious chocolate cake for the... Show more",
           costs: [
@@ -68,15 +70,16 @@ class App extends React.Component {
       totalValue: 0,
       modalIsVisible: false,
       modalType: "newList",
+      selectedCostList: null
     };
   
     this.handleNewListName = this.handleNewListName.bind(this);
     this.handleNewListDescription = this.handleNewListDescription.bind(this);
     this.addNewList = this.addNewList.bind(this);
     this.emptyNewListInputs = this.emptyNewListInputs.bind(this);
-    this.handleNameInput = this.handleNameInput.bind(this);
-    this.handleValueInput = this.handleValueInput.bind(this);
-    this.addItem = this.addItem.bind(this);
+    this.handleNewCostName = this.handleNewCostName.bind(this);
+    this.handleNewCostValue = this.handleNewCostValue.bind(this);
+    this.addNewCost = this.addNewCost.bind(this);
     this.renderCostsLists = this.renderCostsLists.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -91,6 +94,8 @@ class App extends React.Component {
   renderCostsLists() {
     let listItems = this.state.costsLists.map((list, index) => 
       <CostsList
+        index={index}
+        id={list.id}
         name={list.name}
         description={list.description}
         costs={list.costs}
@@ -101,15 +106,42 @@ class App extends React.Component {
     return listItems;
   }
 
-  addNewList() {
-    let currentCostsLists = [...this.state.costsLists];
-    let newCostsList = {
+  formatPrice(price) {
+    price = price.toString();
+    let formattedPrice;
+
+    if (price.length < 3) {
+        while (price.length < 3) {
+            price = `0${price}`;
+        }
+    }
+    
+    let reals = price.substr(0, (price.length - 2));
+    let cents = price.substr((price.length - 2), 2);
+
+    formattedPrice = `${reals}.${cents}`;
+
+    return formattedPrice;
+  }
+
+  addNewList(event) {
+    event.preventDefault();
+
+    let currentCostsLists, newCostsList, lastCostListID;
+
+    currentCostsLists = [...this.state.costsLists];
+
+    lastCostListID = currentCostsLists[currentCostsLists.length - 1].id;
+
+    newCostsList = {
+      id: lastCostListID + 1,
       name: this.state.newListName,
       description: this.state.newListDescription,
       costs: []
     };
 
     currentCostsLists.push(newCostsList);
+
     this.setState({
       costsLists: currentCostsLists
     });
@@ -136,31 +168,37 @@ class App extends React.Component {
     })
   }
 
-  addItem(event) {
-    event.preventDefault();
-
-    // Removes the . (dot) from the string, then transform it into an INT
-    let newProductValue = this.state.newProductValue.split('.');
-    newProductValue = newProductValue.join('');
-    newProductValue = parseInt(newProductValue);
+  addNewCost(id) {
+    // search the list by ID
+    let currentCostsLists, currentCostsListsIndex, costList, newCost, newCostValue;
     
-    let listItems = [...this.state.products, {name: this.state.newProductName, value: newProductValue}];
-    let totalValue = this.state.totalValue + newProductValue;
+    currentCostsLists = this.state.costsLists;
+    currentCostsListsIndex = 0;
 
-    this.setState({
-      products: listItems,
-      totalValue: totalValue
-    });
+    while (id !== currentCostsLists[currentCostsListsIndex].id) {
+      
+      currentCostsListsIndex = currentCostsListsIndex + 1;
+    }
+
+    // update costs cards
+    costList = currentCostsLists[currentCostsListsIndex];
     
+    // format string to INT
+    newCostValue = this.state.newCostValue.split('.');
+    newCostValue = newCostValue.join('');
+    newCostValue = parseInt(newCostValue);
+
+    newCost = {name: this.state.newCostName, value: newCostValue};
+    costList.costs.push(newCost);
   }
 
-  handleNameInput(event) {
+  handleNewCostName(event) {
     this.setState({
-      newProductName: event.target.value
+      newCostName: event.target.value
     });
   }
 
-  handleValueInput(event) {
+  handleNewCostValue(event) {
     // Allow only numbers and dot
     const filterNumbers = /[^0-9\.]/g;
     let newValue = event.target.value.replace(filterNumbers, '');
@@ -173,7 +211,7 @@ class App extends React.Component {
     if (foundDots !== null && foundDots.length > 1) {
       // If a dot has been found. 
       // It will re-render the value to not allow a second dot
-      fullValue = this.state.newProductValue;
+      fullValue = this.state.newCostValue;
     } else {
       // Remove the dot to simplify the calculation
       fullValue = newValue.replace('.', '');
@@ -191,7 +229,7 @@ class App extends React.Component {
         fullValue = firstPart + "." + centsPart;
         
         this.setState({
-          newProductValue: fullValue
+          newCostValue: fullValue
         });
       } else { // If the user is erasing the values
         // Make the default value (0.00) again
@@ -206,7 +244,7 @@ class App extends React.Component {
         newValue = newValue.substr(0, (newValue.length - 2)) + "." + newValue.substr(1, 2);
 
         this.setState((state) => ({
-          newProductValue: newValue
+          newCostValue: newValue
         }));
       } 
     }
@@ -231,9 +269,10 @@ class App extends React.Component {
     this.openModal(); 
   }
 
-  openNewCostCardModal() {
+  openNewCostCardModal(id) {
     this.setState({
-      modalType: 'newCostCard'
+      modalType: 'newCostCard',
+      selectedCostList: id
     });
     this.openModal();
   }
@@ -244,14 +283,18 @@ class App extends React.Component {
     if (this.state.modalIsVisible) {
 
       if (this.state.modalType === 'newCostCard') {
+
         modal = <Modal 
           title="Add new cost"
           inputs={[
-            {title: "Cost name", value: this.state.newProductName, type: "text", handler: this.handleNameInput},
-            {title: "Cost value", value: this.state.newProductValue, type: "text", handler: this.handleValueInput}
+            {title: "Cost name", value: this.state.newCostName, type: "text", handler: this.handleNewCostName},
+            {title: "Cost value", value: this.state.newCostValue, type: "text", handler: this.handleNewCostValue}
           ]}
           close={this.closeModal}
-          button={{ name: "ADD COST", handler: this.addItem}}
+          button={{ name: "ADD COST", handler: (event) => {
+            event.preventDefault();
+            this.addNewCost(this.state.selectedCostList);
+          }}}
         />
       } else if (this.state.modalType === 'newList') {
         modal = <Modal 
@@ -335,97 +378,6 @@ class App extends React.Component {
                 <h1 className="textAlignCenter">Add new list</h1>
               </a>
             </div>
-
-            {/* <div className="costsListWrapper">
-
-              <div className="costsList">
-
-                <div className="costsList__headers">
-                  <h1 className="textAlignCenter">Gaming PC</h1>
-                  <p className="">A very powerful Gaming PC capable of running games like... Show more</p>
-                </div>
-
-                <div className="cardsCostsList">
-                  <ul className="cardsCostsList__cardsList">
-                    <li className="emptyCardsCostsListWarning emptyCardsCostsListWarning--hidden">
-                      <h1>Your list is empty!</h1>
-                      <p>To add a cost, you must press the button "ADD COST" below this list</p>
-                    </li>
-  
-                    <li className="cardCost">
-                      <h2 className="cardCost__title">RTX 3060 TI</h2>
-                      <h3 className="cardCost__value">R$ 6500.00</h3>
-                    </li>
-
-                    <li className="cardCost">
-                      <h2 className="cardCost__title">RTX 3060 TI</h2>
-                      <h3 className="cardCost__value">R$ 6500.00</h3>
-                    </li>
-                    <li className="cardCost">
-                      <h2 className="cardCost__title">RTX 3060 TI</h2>
-                      <h3 className="cardCost__value">R$ 6500.00</h3>
-                    </li>
-                    <li className="cardCost">
-                      <h2 className="cardCost__title">RTX 3060 TI</h2>
-                      <h3 className="cardCost__value">R$ 6500.00</h3>
-                    </li>
-                    <li className="cardCost">
-                      <h2 className="cardCost__title">RTX 3060 TI</h2>
-                      <h3 className="cardCost__value">R$ 6500.00</h3>
-                    </li>
-                    <li className="cardCost">
-                      <h2 className="cardCost__title">RTX 3060 TI</h2>
-                      <h3 className="cardCost__value">R$ 6500.00</h3>
-                    </li>
-                    <li className="cardCost">
-                      <h2 className="cardCost__title">RTX 3060 TI</h2>
-                      <h3 className="cardCost__value">R$ 6500.00</h3>
-                    </li>
-
-                    
-                    
-                  </ul>
-                </div>
-
-                <span className="totalCost">
-                  <p className="totalCost__title">Total Cost:</p>
-                  <p className="totalCost__value">R$ 45000.00</p>
-                </span>
-
-                <button className="costsList__addCostButton" onClick={this.openNewCostCardModal}>ADD COST</button>
-
-              </div>
-
-            </div>
-
-            <div className="costsListWrapper costsListWrapper--last">
-
-              <div className="costsList">
-
-                <div className="costsList__headers">
-                  <h1 className="textAlignCenter">Gaming PC</h1>
-                  <p className="">A very powerful Gaming PC capable of running games like... Show more</p>
-                </div>
-
-                <div className="cardsCostsList">
-                  <ul className="cardsCostsList__cardsList">
-                    <li className="emptyCardsCostsListWarning emptyCardsCostsListWarning--visible">
-                      <h1>Your list is empty!</h1>
-                      <p>To add a cost, you must press the button "ADD COST" below this list</p>
-                    </li>
-                  </ul>
-                </div>
-
-                <span className="totalCost">
-                  <p className="totalCost__title">Total Cost:</p>
-                  <p className="totalCost__value">R$ 0.00</p>
-                </span>
-
-                <button className="costsList__addCostButton">ADD COST</button>
-
-              </div>
-
-            </div> */}
 
           </div>
           
