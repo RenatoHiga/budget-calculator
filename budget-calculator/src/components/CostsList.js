@@ -4,9 +4,52 @@ class CostsList extends React.Component {
 
     constructor(props) {
         super(props);
+        
+        this.state = {
+            showShortenDescription: true 
+        }
 
         this.calculateTotalListCost = this.calculateTotalListCost.bind(this);
     }
+
+    shortenDescription() {
+        let descriptionLength, shortenedDescription;
+        descriptionLength = this.props.description.length;
+        
+        if (descriptionLength > 50) {
+            shortenedDescription = this.props.description.slice(0, 50);
+            shortenedDescription = (
+                <p className="">
+                    {shortenedDescription}... <span className="textBold" onClick={() => this.setState({showShortenDescription: false})}>Show more</span>
+                </p>
+            );
+        } else {
+            shortenedDescription = (
+                <p className="">
+                    {this.props.description}
+                </p>
+            );
+        }
+        return shortenedDescription;
+    }
+
+    renderDescription(showShortenDescription) {
+        let description;
+
+        if (showShortenDescription) {
+            description = this.shortenDescription();
+        } else {
+            description = (
+                <p className="">
+                    {this.props.description} <span className="textBold" onClick={() => {this.setState({showShortenDescription: true})}}>Show Less</span> 
+                </p>
+            );
+        }
+
+        return description;
+    }
+
+
 
     formatPrice(price) {
         price = price.toString();
@@ -72,7 +115,7 @@ class CostsList extends React.Component {
 
                     <div className="costsList__headers">
                         <h1 className="textAlignCenter">{this.props.name}</h1>
-                        <p className="">{this.props.description}</p>
+                        {this.renderDescription(this.state.showShortenDescription)}
                     </div>
 
                     <div className="cardsCostsList">

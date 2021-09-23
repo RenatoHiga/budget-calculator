@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles/style.css';
 import addListIcon from './images/icons/addList.svg';
+import closeNavbarMenu from './images/icons/close.svg'
 
 import Modal from './components/Modal';
 import CostsList from './components/CostsList';
@@ -69,6 +70,7 @@ class App extends React.Component {
       ],
       totalValue: 0,
       modalIsVisible: false,
+      navbarMenuIsVisible: false,
       modalType: "newList",
       selectedCostList: null
     };
@@ -79,6 +81,7 @@ class App extends React.Component {
     this.emptyNewListInputs = this.emptyNewListInputs.bind(this);
     this.handleNewCostName = this.handleNewCostName.bind(this);
     this.handleNewCostValue = this.handleNewCostValue.bind(this);
+    this.emptyNewCostInputs = this.emptyNewCostInputs.bind(this);
     this.addNewCost = this.addNewCost.bind(this);
     this.renderCostsLists = this.renderCostsLists.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -126,15 +129,20 @@ class App extends React.Component {
 
   addNewList(event) {
     event.preventDefault();
-
-    let currentCostsLists, newCostsList, lastCostListID;
+    let currentCostsLists, currentCostsListsAreEmpty, newCostsList, lastCostsListID, newCostsListID;
 
     currentCostsLists = [...this.state.costsLists];
-
-    lastCostListID = currentCostsLists[currentCostsLists.length - 1].id;
+    currentCostsListsAreEmpty = currentCostsLists.length === 0;
+    
+    if (currentCostsListsAreEmpty) {
+      newCostsListID = 1;
+    } else {
+      lastCostsListID = currentCostsLists[currentCostsLists.length - 1].id;
+      newCostsListID = lastCostsListID + 1;
+    }
 
     newCostsList = {
-      id: lastCostListID + 1,
+      id: newCostsListID,
       name: this.state.newListName,
       description: this.state.newListDescription,
       costs: []
@@ -147,6 +155,7 @@ class App extends React.Component {
     });
 
     this.emptyNewListInputs();
+    this.closeModal();
   }
 
   emptyNewListInputs() {
@@ -166,6 +175,13 @@ class App extends React.Component {
     this.setState({
       newListDescription: event.target.value
     })
+  }
+
+  emptyNewCostInputs() {
+    this.setState({
+      newCostName: "",
+      newCostValue: "0.00"
+    });
   }
 
   addNewCost(id) {
@@ -190,6 +206,9 @@ class App extends React.Component {
 
     newCost = {name: this.state.newCostName, value: newCostValue};
     costList.costs.push(newCost);
+
+    this.emptyNewCostInputs();
+    this.closeModal();
   }
 
   handleNewCostName(event) {
@@ -278,7 +297,7 @@ class App extends React.Component {
   }
 
   render() {
-    let modal;
+    let modal, navbarMenu;
 
     if (this.state.modalIsVisible) {
 
@@ -312,6 +331,26 @@ class App extends React.Component {
       modal = ""
     }
 
+    if (this.state.navbarMenuIsVisible) {
+      navbarMenu = (
+        <div className="navbarMenu">
+          
+          <div className="navbarMenu__overlay">
+
+            <ul className="navbarMenu__optionsList">
+              <li className="navbarMenu__closeButton"> <img src={closeNavbarMenu} onClick={() => this.setState({navbarMenuIsVisible: false})} /></li>
+              <li className="navbarMenu__option">Add new list</li>
+              <li className="navbarMenu__option">Update list</li>
+              <li className="navbarMenu__option">Delete list</li>
+            </ul>
+
+          </div>
+        </div>
+      );        
+    } else {
+      navbarMenu = "";
+    }
+
     return (
       <div className="rootBody">
 
@@ -319,7 +358,9 @@ class App extends React.Component {
 
         <nav className="navbar">
 
-          <div className="menuButton">
+          <div className="menuButton" onClick={() => {
+            this.setState({navbarMenuIsVisible: true})
+          }}>
             <div className="menuButton__bar"></div>
             <div className="menuButton__bar"></div>
             <div className="menuButton__bar"></div>
@@ -331,23 +372,7 @@ class App extends React.Component {
           
         </nav>
 
-
-        <div className="navbarMenu hidden">
-          
-          <div className="navbarMenu__overlay">
-
-            <ul className="navbarMenu__optionsList">
-              <li className="navbarMenu__option"> {/*Close*/}</li>
-              <li className="navbarMenu__option">Add new list</li>
-              <li className="navbarMenu__option">Update list</li>
-              <li className="navbarMenu__option">Delete list</li>
-            </ul>
-
-
-          </div>
-        
-        </div>        
-
+        {navbarMenu}
 
         <div className="mainContent">
           
