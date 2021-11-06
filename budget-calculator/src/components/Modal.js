@@ -19,8 +19,10 @@ class Modal extends React.Component {
                 key={index}
                 title={input.title}
                 value={input.value}
+                options={input.options}
                 onChange={input.handler}
                 type={input.type}
+                visible={input.visible}
             />
         )
 

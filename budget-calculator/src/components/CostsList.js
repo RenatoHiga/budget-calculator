@@ -90,7 +90,7 @@ class CostsList extends React.Component {
             );
         } else {
             cards = cards.map((cost, index) => (
-                <li className="cardCost" key={index}>
+                <li className="cardCost" key={index} onClick={() => {this.props.openModalUpdateCostHandler(cost, this.props.id)}}>
                   <h2 className="cardCost__title">{cost.name}</h2>
                   <h3 className="cardCost__value">R$ {this.formatPrice(cost.value)}</h3>
                 </li>
