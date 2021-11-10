@@ -26,6 +26,9 @@ const costSchema = new mongoose.Schema({
 
 const costsListsSchema = new mongoose.Schema(
   {
+    id: {
+      type: Number
+    },
     name: {
       type: String,
       required: [true, 'The property "name" is required!'],
@@ -60,6 +63,19 @@ async function getCostsLists() {
   return costsLists.find();
 }
 
+async function getCostListById(id) {
+
+  const costList = await costsLists.findOne(
+      { 'id': id },
+      "id name description"
+  ).catch((error) => {
+    console.log("error below!");
+    console.log(error);
+  });
+
+  return costList;
+}
+
 async function formatErrors(errors) {
   let message = "";
   for (const value of Object.values(errors)) {
@@ -71,14 +87,23 @@ async function formatErrors(errors) {
 
 async function addCostList(newCostList) {
   try {
-    await costsLists.insertMany(newCostList);
+    let result = await costsLists.insertMany(newCostList);
+    return result;
   } catch (err) {
     let errorMessage = await formatErrors(err.errors);
     return errorMessage;
   }
 }
 
-async function deleteCostList(id) {}
+async function deleteCostList(id) {
+  try {
+    const result = await costsLists.deleteOne({ id: id });
+    return result;
+  } catch (error) {
+    console.log('an error has ocurred!');
+    console.log(error);
+  }
+}
 
 app.use(function (req, res, next) {
   // Allow http://127.0.0.1:3000 and http://localhost:3000 for the (React.js project) to use the API
@@ -105,9 +130,39 @@ app.get("/costs-lists", async (req, res) => {
   res.send(costsLists);
 });
 
+app.get("/v1/costs-list/:id", async (req, res) => {
+  try {
+    const foundList = await getCostListById(req.params.id)
+      .catch(error => console.log("an error has ocurred!", error));
+
+    if (foundList === null) {
+      res.send('Whoops! Cost list not found!');
+    } else {
+      res.send(foundList);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.post("/costs-lists", jsonParser, async (req, res) => {
   let result = await addCostList(req.body);
   res.send(result);
+});
+
+app.delete("/v1/costs-lists/:id", async (req, res) => {
+  try {
+    const result = await deleteCostList(req.params.id);
+    if (result.deletedCount > 0) {
+      res.send(`Cost list with ID: ${req.params.id} has been deleted!`);
+    } else {
+      res.send(`Cost list with ID: ${req.params.id} does not exist or was already deleted!`);
+    }
+    
+  } catch (error) {
+    console.log('an error has ocurred!');
+    console.log(error);
+  }
 });
 
 app.get("/", (req, res) => {
