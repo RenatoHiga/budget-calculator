@@ -105,6 +105,22 @@ async function deleteCostList(id) {
   }
 }
 
+async function updateCostList(id, body) {
+  try {
+    const result = await costsLists.updateOne({id: id}, body);
+
+    if (result.modifiedCount > 0) {
+      const updatedElement = await costsLists.findOne({id: id});
+      return updatedElement;
+    } else {
+      return `Cost list with id ${id} was not modified because it has already the same data or the id don't exist!`
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 app.use(function (req, res, next) {
   // Allow http://127.0.0.1:3000 and http://localhost:3000 for the (React.js project) to use the API
   const allowedOrigins = ["http://127.0.0.1:3000", "http://localhost:3000"];
@@ -150,7 +166,16 @@ app.post("/costs-lists", jsonParser, async (req, res) => {
   res.send(result);
 });
 
-app.delete("/v1/costs-lists/:id", async (req, res) => {
+app.patch("/v1/costs-list/:id", jsonParser, async (req, res) => {
+  try {
+    const result = await updateCostList(req.params.id, req.body);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+}) 
+
+app.delete("/v1/costs-list/:id", async (req, res) => {
   try {
     const result = await deleteCostList(req.params.id);
     if (result.deletedCount > 0) {
