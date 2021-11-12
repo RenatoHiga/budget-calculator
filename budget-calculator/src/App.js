@@ -8,9 +8,12 @@ import CostsList from "./components/CostsList";
 
 class App extends React.Component {
   async getCosts() {
-    fetch("http://127.0.0.1:3001/costs-lists")
+    fetch("http://127.0.0.1:3001/v1/costs-lists")
       .then((response) => response.json())
-      .then((data) => this.setState({ costsLists: data }));
+      .then((data) => {
+        // this.setState({ costsLists: data })
+        // console.log(data);
+      });
   }
 
   constructor(props) {
@@ -213,6 +216,8 @@ class App extends React.Component {
     newCostValue = this.state.newCostValue.split(".");
     newCostValue = newCostValue.join("");
     newCostValue = parseInt(newCostValue);
+
+    alert(newCostValue);
 
     newCost = { name: this.state.newCostName, value: newCostValue };
     costList.costs.push(newCost);
