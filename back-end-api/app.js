@@ -141,7 +141,7 @@ app.use(function (req, res, next) {
 
 var jsonParser = bodyParser.json();
 
-app.get("/costs-lists", async (req, res) => {
+app.get("/v1/costs-lists", async (req, res) => {
   let costsLists = await getCostsLists().catch((err) => console.log(err));
   res.send(costsLists);
 });
