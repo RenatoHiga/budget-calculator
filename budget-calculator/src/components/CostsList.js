@@ -4,7 +4,7 @@ class CostsList extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
             showShortenDescription: true 
         }
@@ -49,41 +49,65 @@ class CostsList extends React.Component {
         return description;
     }
 
-
-
     formatPrice(price) {
-        price = price.toString();
-        let formattedPrice;
-
-        if (price.length < 3) {
-            while (price.length < 3) {
-                price = `0${price}`;
-            }
-        }
+        try {
+            if (
+                price !== undefined
+                && price !== NaN
+            ) {
+                price = price.toString();
+                let formattedPrice;
         
-        let reals = price.substr(0, (price.length - 2));
-        let cents = price.substr((price.length - 2), 2);
+                if (price.length < 3) {
+                    while (price.length < 3) {
+                        price = `0${price}`;
+                    }
+                }
+                
+                let reals = price.substr(0, (price.length - 2));
+                let cents = price.substr((price.length - 2), 2);
+        
+                formattedPrice = `${reals}.${cents}`;
+        
+                return formattedPrice;
+            } else {
+                return '0.00';
+            }
+        } catch (error) {
+            console.log(error);
+        }
 
-        formattedPrice = `${reals}.${cents}`;
-
-        return formattedPrice;
     }
 
     calculateTotalListCost(costs) {
-        let totalListCost = 0;
-        costs.forEach(cost => { totalListCost = totalListCost + cost.value })
-        
-        totalListCost = this.formatPrice(totalListCost);
-        return totalListCost;
+        try {
+            let totalListCost = 0;
+
+            if (costs !== undefined) {
+                costs.forEach(cost => {
+                    if (cost.value !== undefined) {
+                        totalListCost = totalListCost + cost.value 
+                    }
+                })
+            }
+
+            totalListCost = this.formatPrice(totalListCost);
+            return totalListCost;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     renderCards(cards) {
 
-        const cardsListIsEmpty = cards.length === 0;
+        const cardsListIsEmpty = (
+            cards === undefined
+            || cards.length === 0
+        );
 
         if (cardsListIsEmpty) {
             cards = (
-                <li className="emptyCardsCostsListWarning emptyCardsCostsListWarning--visible">
+                <li key={1} className="emptyCardsCostsListWarning emptyCardsCostsListWarning--visible">
                     <h1>Your list is empty!</h1>
                     <p>To add a cost, you must press the button "ADD COST" below this list</p>
                 </li>

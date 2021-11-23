@@ -13,16 +13,17 @@ mongoose.connection.on("error", (err) => {
   console.log(err);
 });
 
-const costSchema = new mongoose.Schema({
+const costsSchema = new mongoose.Schema({
+  id: {
+    type: Number
+  },
   name: {
-    type: String,
-    required: [true, 'The property "name" in costs[] is required!'],
+    type: String
   },
   value: {
-    type: Number,
-    required: [true, 'THe property "value" in costs[] is required!'],
-  },
-});
+    type: Number
+  }
+})
 
 const costsListsSchema = new mongoose.Schema(
   {
@@ -37,14 +38,7 @@ const costsListsSchema = new mongoose.Schema(
       type: String,
       required: [true, 'The property "description" is required!'],
     },
-    costs: {
-      type: [costSchema],
-      validate: {
-        validator: (value) => Array.isArray(value) && value.length > 0,
-        message: () =>
-          'The property "costs" is required and must not be empty!',
-      },
-    },
+    costs: [costsSchema]
   },
   {
     versionKey: false,
@@ -88,6 +82,7 @@ async function formatErrors(errors) {
 async function addCostList(newCostList) {
   try {
     let result = await costsLists.insertMany(newCostList);
+
     return result;
   } catch (err) {
     let errorMessage = await formatErrors(err.errors);
@@ -135,6 +130,11 @@ app.use(function (req, res, next) {
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
   );
 
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With,content-type'
+  );
+
   // After allowing the React.js project, proceed to the wanted Route
   next();
 });
@@ -161,7 +161,7 @@ app.get("/v1/costs-list/:id", async (req, res) => {
   }
 });
 
-app.post("/costs-lists", jsonParser, async (req, res) => {
+app.post("/v1/costs-lists", jsonParser, async (req, res) => {
   let result = await addCostList(req.body);
   res.send(result);
 });

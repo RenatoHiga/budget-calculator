@@ -8,12 +8,10 @@ import CostsList from "./components/CostsList";
 
 class App extends React.Component {
   async getCosts() {
-    fetch("http://127.0.0.1:3001/v1/costs-lists")
-      .then((response) => response.json())
-      .then((data) => {
-        // this.setState({ costsLists: data })
-        // console.log(data);
-      });
+    const response = await fetch("http://127.0.0.1:3001/v1/costs-lists")
+    const result = await response.json();
+
+    this.setState({costsLists: result});
   }
 
   constructor(props) {
@@ -25,42 +23,42 @@ class App extends React.Component {
       newCostName: "",
       newCostValue: "0.00",
       costsLists: [
-        // {
-        //   id: 1,
-        //   name: "Gamer PC",
-        //   description:
-        //     "A very powerful Gaming PC for running heavy games like Doom Eternal, Crysis, The Witcher 3, GTA V and more... Also, I’ll use the PC for video editing.",
-        //   costs: [
-        //     {
-        //       id: 1,
-        //       name: "Graphics Card",
-        //       value: 100000,
-        //     },
-        //     {
-        //       id: 2,
-        //       name: "Processor",
-        //       value: 250000,
-        //     },
-        //   ],
-        // },
-        // {
-        //   id: 2,
-        //   name: "Chocolate Cake",
-        //   description:
-        //     "Recipe for a simple, but delicious chocolate cake for the party at night",
-        //   costs: [
-        //     {
-        //       id: 1,
-        //       name: "Eggs",
-        //       value: 30,
-        //     },
-        //     {
-        //       id: 2,
-        //       name: "Flour",
-        //       value: 1,
-        //     },
-        //   ],
-        // },
+      //   // {
+      //   //   id: 1,
+      //   //   name: "Gamer PC",
+      //   //   description:
+      //   //     "A very powerful Gaming PC for running heavy games like Doom Eternal, Crysis, The Witcher 3, GTA V and more... Also, I’ll use the PC for video editing.",
+      //   //   costs: [
+      //   //     {
+      //   //       id: 1,
+      //   //       name: "Graphics Card",
+      //   //       value: 100000,
+      //   //     },
+      //   //     {
+      //   //       id: 2,
+      //   //       name: "Processor",
+      //   //       value: 250000,
+      //   //     },
+      //   //   ],
+      //   // },
+      //   // {
+      //   //   id: 2,
+      //   //   name: "Chocolate Cake",
+      //   //   description:
+      //   //     "Recipe for a simple, but delicious chocolate cake for the party at night",
+      //   //   costs: [
+      //   //     {
+      //   //       id: 1,
+      //   //       name: "Eggs",
+      //   //       value: 30,
+      //   //     },
+      //   //     {
+      //   //       id: 2,
+      //   //       name: "Flour",
+      //   //       value: 1,
+      //   //     },
+      //   //   ],
+      //   // },
       ],
       listToDelete: 0,
       listToUpdate: "NO-VALUE",
@@ -70,6 +68,8 @@ class App extends React.Component {
       selectedCostList: null,
       updateListInputsAreVisible: false,
     };
+
+    this.baseApiUrl = "http://127.0.0.1:3001/v1";
 
     this.handleNewListName = this.handleNewListName.bind(this);
     this.handleNewListDescription = this.handleNewListDescription.bind(this);
@@ -92,11 +92,10 @@ class App extends React.Component {
     this.updateCostCard = this.updateCostCard.bind(this);
     this.getCosts = this.getCosts.bind(this);
 
-    this.getCosts();
   }
 
   componentDidMount() {
-    // this.getCosts();
+    this.getCosts();
   }
 
   renderCostsLists() {
@@ -164,8 +163,26 @@ class App extends React.Component {
       costsLists: currentCostsLists,
     });
 
+    this.createNewCostList(newCostsList);
+
     this.emptyNewListInputs();
     this.closeModal();
+  }
+
+  async createNewCostList(body) {
+    try {
+      fetch('http://localhost:3001/v1/costs-lists', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body)
+      })
+        .then(resp => resp.json())
+        .then(data => console.log(data))
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
   emptyNewListInputs() {
@@ -217,13 +234,26 @@ class App extends React.Component {
     newCostValue = newCostValue.join("");
     newCostValue = parseInt(newCostValue);
 
-    alert(newCostValue);
-
     newCost = { name: this.state.newCostName, value: newCostValue };
     costList.costs.push(newCost);
 
+    this.apiAddCostsToList(costList.costs, costList.id);
+
     this.emptyNewCostInputs();
     this.closeModal();
+  }
+
+  async apiAddCostsToList(costs, listId) {
+    await fetch(`${this.baseApiUrl}/costs-list/${listId}`, {
+      method: 'PATCH',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({costs: costs})
+    })
+      .then(response => response.json())
+      .then(data => console.log(data));
   }
 
   handleNewCostName(event) {
@@ -337,7 +367,6 @@ class App extends React.Component {
   }
 
   openNewCostCardModal(id) {
-    console.log(this.state);
     this.setState({
       modalType: "newCostCard",
       selectedCostList: id,
@@ -381,7 +410,6 @@ class App extends React.Component {
       });
       this.emptyNewListInputs();
       this.closeModal();
-      console.log(this.state);
     }
   }
 
