@@ -229,12 +229,14 @@ class App extends React.Component {
     // update costs cards
     costList = currentCostsLists[currentCostsListsIndex];
 
+    let costId = costList.costs.length - 1;
+
     // format string to INT
     newCostValue = this.state.newCostValue.split(".");
     newCostValue = newCostValue.join("");
     newCostValue = parseInt(newCostValue);
 
-    newCost = { name: this.state.newCostName, value: newCostValue };
+    newCost = { id: costId, name: this.state.newCostName, value: newCostValue };
     costList.costs.push(newCost);
 
     this.apiAddCostsToList(costList.costs, costList.id);
@@ -244,7 +246,6 @@ class App extends React.Component {
   }
 
   async apiAddCostsToList(costs, listId) {
-    console.log('add costs!');
     await fetch(`${this.baseApiUrl}/costs-list/${listId}`, {
       method: 'PATCH',
       mode: 'cors',
@@ -331,11 +332,6 @@ class App extends React.Component {
   }
 
   async apiDeleteList(id) {
-    // const options = {
-    //   method: 'DELETE'
-    // };
-
-    console.log(`${this.baseApiUrl}/costs-list/${id}`);
     await fetch(`${this.baseApiUrl}/costs-list/${id}`, {
       method: 'DELETE',
       mode: 'cors',
@@ -499,6 +495,8 @@ class App extends React.Component {
       newCostName: "",
       newCostValue: "",
     });
+
+    this.apiAddCostsToList(costs, costsLists[listIndexToUpdate].id);
 
     this.closeModal();
   }
