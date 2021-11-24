@@ -244,6 +244,7 @@ class App extends React.Component {
   }
 
   async apiAddCostsToList(costs, listId) {
+    console.log('add costs!');
     await fetch(`${this.baseApiUrl}/costs-list/${listId}`, {
       method: 'PATCH',
       mode: 'cors',
@@ -329,6 +330,23 @@ class App extends React.Component {
     });
   }
 
+  async apiDeleteList(id) {
+    // const options = {
+    //   method: 'DELETE'
+    // };
+
+    console.log(`${this.baseApiUrl}/costs-list/${id}`);
+    await fetch(`${this.baseApiUrl}/costs-list/${id}`, {
+      method: 'DELETE',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(resp => resp.text())
+      .then(data => console.log(data))
+  }
+
   deleteList(event) {
     event.preventDefault();
 
@@ -338,6 +356,7 @@ class App extends React.Component {
     for (let index = 0; index <= costsLists.length - 1; index++) {
       if (costsLists[index].id === listToDelete) {
         costsLists.splice(index, 1);
+        this.apiDeleteList(listToDelete);
         break;
       }
     }
