@@ -403,6 +403,24 @@ class App extends React.Component {
     });
   }
 
+  apiUpdateList(costList) {
+    try {
+      fetch(`${this.baseApiUrl}/costs-list/${costList.id}`, {
+        method: 'PATCH',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(costList)
+      })
+      .then(resp => resp.json())
+      .then(data => console.log(data));
+      console.log(costList);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   updateList(event) {
     event.preventDefault();
 
@@ -415,14 +433,16 @@ class App extends React.Component {
         if (costsLists[index].id === this.state.listToUpdate) {
           costsLists[index].name = this.state.newListName;
           costsLists[index].description = this.state.newListDescription;
+          this.apiUpdateList(costsLists[index]);
           break;
         }
       }
-
+ 
       this.setState({
         updateListInputsAreVisible: false,
         costsLists: costsLists,
       });
+ 
       this.emptyNewListInputs();
       this.closeModal();
     }

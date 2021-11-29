@@ -132,7 +132,7 @@ app.use(function (req, res, next) {
 
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type'
+    'X-Requested-With,content-type,Content-Type'
   );
 
   // After allowing the React.js project, proceed to the wanted Route
