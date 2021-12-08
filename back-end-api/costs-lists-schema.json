@@ -1,0 +1,1 @@
+{ "id": 1, "name": "Gamer PC", "description": "A very powerful Gaming PC for running heavy games like Doom Eternal, Crysis, The Witcher 3, GTA V and more... Also, I’ll use the PC for video editing.", "costs": [ { "id": 1, "name": "Graphics Card", "value": 100000 }, { "id": 2, "name": "Processor", "value": 250000 } ] }

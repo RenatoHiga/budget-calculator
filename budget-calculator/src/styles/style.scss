@@ -1,197 +1,533 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+$bg-color-navbar: #344033;
+$bg-color-menu: #344033;
+$bg-color-list: #344033;
+$bg-color-modal: #344033;
+$bg-color-app: #738C70;
+$bg-color-modal-overlay: rgba(115, 140, 112, 0.60);
+$bg-color-text-input: #587356;
+$bg-color-button: #54994D;
+$bg-color-inner-list: #495947;
+$bg-color-cost-item: #487345;
+
+$color-text: rgba(255, 255, 255, 0.87);
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
 }
 
-html, body {
-    height: 100vh;
+html,
+body {
+  height: 100vh;
 }
 
 .root {
-    height: 100%;
+  height: 100%;
 }
 
 .rootBody {
-    height: 100%;
+  height: 100%;
+  background-color: $bg-color-app;
 }
 
-
+.lightText {
+  color: $color-text;
+}
 
 .marginTop15 {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .textAlignCenter {
-    text-align: center;
+  text-align: center;
+}
+
+.textBold {
+  font-weight: 700;
+}
+
+.showBlock {
+  display: block;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
+.navbar {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  padding: 15px;
+
+  position: absolute;
+  z-index: 0;
+
+  background-color: $bg-color-navbar;
+}
+
+.navbar__titleWrapper {
+  width: 100%;
+}
+
+.navbar__title {
+  text-align: center;
+}
+
+.menuButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  z-index: 1;
+
+  cursor: pointer;
+}
+
+.menuButton__bar {
+  display: block;
+  height: 4px;
+
+  background-color: #fff;
+}
+
+.navbarMenu {
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+  z-index: 1;
+}
+
+.navbarMenu--opened {
+  display: block;
+}
+
+.navbarMenu--closed {
+  display: none;
+}
+
+.navbarMenu__overlay {
+  z-index: 1;
+  height: 100%;
+  background-color: $bg-color-modal-overlay;
+}
+
+.navbarMenu__optionsList {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  height: 100%;
+  border-right: 1px solid #fff;
+
+  background-color: $bg-color-navbar;
+}
+
+.navbarMenu__option {
+  padding: 15px;
+  border-bottom: 1px solid #fff;
+  color: $color-text;
+  cursor: pointer;
+}
+
+.navbarMenu__closeButton {
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 15px;
+  border-bottom: 1px solid #fff;
+}
+
+.listsNotFoundWarning {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.listsNotFoundWarning--visible {
+  display: flex;
+}
+
+.listsNotFoundWarning--hidden {
+  display: none;
+}
+
+.listsNotFoundWarning__title {
+  text-align: center;
+}
+
+.listsNotFoundWarning__description {
+  text-align: center;
+}
+
+.listsNotFoundWarning__addListButton {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+  margin: 15px auto 0 auto;
+  border: 0;
+
+  background-color: #c4c4c4;
+  font-size: 12px;
+  font-weight: 700;
+}
 
 .mainContent {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 30px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 58px 0 0 0;
+  margin: 0 auto;
 }
 
 .mainContent__title {
-    text-align: center;
+  text-align: center;
 }
 
 @media (min-width: 1024px) {
-    .mainContent {
-        max-width: 1024px;
-    }
+  // .mainContent {
+  //     max-width: 1024px;
+  // }
 }
 
-.modalAddCard--open {
-    display: block;
+.modal--open {
+  display: block;
 }
 
-.modalAddCard--closed {
-    display: none;
+.modal--closed {
+  display: none;
 }
 
-.modalAddCard {
-    width: 100%;
-    height: 100%;
+.modal {
+  width: 100%;
+  min-height: 100vh;
 
-    padding: 30px;
+  padding: 30px;
 
-    position: absolute;
-    top: 0;
+  position: absolute;
+  top: 0;
 
-    background-color: #ffffff;
+  z-index: 1;
+
+  background-color: $bg-color-modal;
 }
 
-@media (min-width: 1024px) {
-    .modalAddCard__form {
-        max-width: 1024px;
-        margin: 0 auto;
-    }
+.modal__header {
+  display: flex;
+}
+
+.modal__headerTitle {
+  width: 100%;
 }
 
 .inputWrapper {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .inputWrapper__label {
-    font-size: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
 }
 
 .inputWrapper__input {
-    font-size: 1rem;
-    padding: 10px;
-    border: 0;
-    outline: none;
-    border-radius: 3px;
+  font-size: 1rem;
+  padding: 10px;
+  border: 0;
+  outline: none;
+  border-radius: 3px;
 
-    background-color: #EFEFEF;
+  background-color: $bg-color-text-input;
+  color: $color-text;
 }
 
-
-
-.button {
-    width: 100%;
-    padding: 10px;
-    border: 0px;
-
-    font-size: 1rem;
+.inputWrapper__inputTextArea {
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 125px;
+  font-size: 1rem;
+  padding: 10px;
+  border: 0;
+  outline: none;
+  border-radius: 3px;
+  background-color: $bg-color-text-input;
+  color: $color-text;
 }
 
+.inputWrapper__input::placeholder,
+.inputWrapper__inputTextArea::placeholder {
+  color: $color-text;
+  opacity: 0.60;
+}
 
+.modal__button {
+  width: 100%;
+  padding: 10px;
+  border: 0;
+  border-radius: 3px;
+
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: $bg-color-button;
+  color: $color-text;
+}
+
+.listsContainer {
+  display: flex;
+  width: 100vw;
+  height: 100%;
+
+  overflow-y: scroll;
+}
+
+.costsListWrapper {
+  padding: 10px 0 10px 10px;
+}
+
+.costsListWrapper--first {
+  padding: 10px 0 10px 20px;
+}
+
+.costsListWrapper--last {
+  padding: 10px 20px 10px 10px;
+}
 
 .costsList {
-    height: 100%;
-    min-height: 280px;
-    max-height: 60vh;
-    padding: 20px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
 
-    background-color: #C4C4C4;
+  width: calc(100vw - 40px);
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.28);
 
-    list-style: none;
-    overflow-y: scroll;
+  position: relative;
+  z-index: 0;
+
+  background-color: $bg-color-list;
+
+  list-style: none;
 }
 
+.costsList--addNewList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: calc(100vw - 40px);
+  max-width: 400px;
+  height: 100%;
+  min-height: 360px;
+  max-height: 500px;
+
+
+  border-radius: 10px;
+
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.28);
+  background-color: $bg-color-list;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+  color: $color-text;
+}
+
+.costsList__iconNewList {
+  display: block;
+  height: 73px;
+  width: 73px;
+  color: $color-text;
+}
+
+.costsList__headers {
+  padding: 10px 10px 10px 10px;
+  overflow-wrap: break-word;
+  color: $color-text;
+}
+
+.cardsCostsList {
+  padding: 0 10px 58px 10px;
+  overflow-y: scroll;
+}
+
+.cardsCostsList__cardsList {
+  min-height: 200px;
+  height: 100%;
+  padding: 10px 10px 0 10px;
+  border-radius: 10px;
+
+  position: relative;
+
+  overflow-y: scroll;
+
+  background-color: $bg-color-inner-list;
+  color: $color-text;
+  list-style: none;
+}
+
+.emptyCardsCostsListWarning {
+  text-align: center;
+}
+
+.emptyCardsCostsListWarning--hidden {
+  display: none;
+}
+
+.emtpyCardsCostsListWarning--visible {
+  display: block;
+}
+
+.costsList__addCostButton {
+  padding: 10px 0;
+  border: 0;
+  border-radius: 0 0 10px 10px;
+
+  background-color: $bg-color-button;
+  color: $color-text;
+  cursor: pointer;
+}
+
+.cardCost {
+  display: block;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border-radius: 10px;
+  background-color: $bg-color-cost-item;
+  overflow-wrap: break-word;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  color: $color-text;
+}
+
+.cardCost__title {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.cardCost__value {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.totalCost {
+  display: block;
+  width: 100%;
+
+  position: absolute;
+  left: 0;
+  bottom: 45px;
+
+  text-align: center;
+  color: $color-text;
+}
 
 .totalCost__title {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 .totalCost__value {
-    font-weight: 700;
-    font-size: 1rem + 0.375rem;
+  font-weight: 700;
+  font-size: 1rem + 0.375rem;
 }
 
-
 .costsList__row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 @media (max-width: 425px) {
-    .costsList__row {
-        justify-content: space-evenly; 
-    }
+  .costsList__row {
+    justify-content: space-evenly;
+  }
 }
 
-
 .costItem {
-    display: flex;
-    flex-direction: column;
-    
-    width: 125px;
-    max-height: 200px;
+  display: flex;
+  flex-direction: column;
 
-    margin-top: 10px;
-    padding: 10px;
-    
-    background-color: #EFEFEF;
+  width: 125px;
+  max-height: 200px;
+
+  margin-top: 10px;
+  padding: 10px;
+
+  background-color: #efefef;
 }
 
 .costItem__image {
-    display: block;
-    width: 100%;
-    height: 105px;
-    margin-right: 5px;
+  display: block;
+  width: 100%;
+  height: 105px;
+  margin-right: 5px;
 
-    background: #C4C4C4;
+  background: #c4c4c4;
 }
 
 .costItem__description {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .costItem__price {
-    font-size: 1rem + 0.125rem;
-    font-weight: 700;
+  font-size: 1rem + 0.125rem;
+  font-weight: 700;
 }
 
-
-
 .addCostButton {
-    padding: 10px 0px;
+  padding: 10px 0px;
 
-    border: 0;
-    border-radius: 3px;
+  border: 0;
+  border-radius: 3px;
 
-    outline: none;
+  outline: none;
 
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
+  font-weight: 700;
+  color: $color-text;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1024px) {
+  
+  .rootBody {
+    display: flex;
+  }
+
+  .navbarMenu {
+    width: 25vw;
+    position: relative;
+  }
+  
+  .navbarMenu__overlay {
+    background: none;
+  }
+
+  // .navbarMenu__
+
+  .navbarMenu__optionsList {
+    max-width: 25vw;
+  }
+
+  .mainContent {
+    width: 100%;
+    overflow-x: scroll;
+  }
+
+  .listsContainer {
+    width: 100%;
+  }
+
+  .modal__form {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+
 }
