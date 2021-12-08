@@ -17,10 +17,11 @@ body {
 
 .rootBody {
   height: 100%;
+  background-color: #738C70;
 }
 
 .lightText {
-  color: white;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .marginTop15 {
@@ -50,7 +51,7 @@ body {
   padding: 15px;
   position: absolute;
   z-index: 0;
-  background-color: #7f7f7f;
+  background-color: #344033;
 }
 
 .navbar__titleWrapper {
@@ -68,6 +69,7 @@ body {
   width: 25px;
   height: 20px;
   z-index: 1;
+  cursor: pointer;
 }
 
 .menuButton__bar {
@@ -94,7 +96,7 @@ body {
 .navbarMenu__overlay {
   z-index: 1;
   height: 100%;
-  background-color: rgba(127, 127, 127, 0.6);
+  background-color: rgba(115, 140, 112, 0.6);
 }
 
 .navbarMenu__optionsList {
@@ -103,13 +105,14 @@ body {
   width: 90vw;
   height: 100%;
   border-right: 1px solid #fff;
-  background-color: #7f7f7f;
+  background-color: #344033;
 }
 
 .navbarMenu__option {
   padding: 15px;
   border-bottom: 1px solid #fff;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.87);
+  cursor: pointer;
 }
 
 .navbarMenu__closeButton {
@@ -179,7 +182,7 @@ body {
   position: absolute;
   top: 0;
   z-index: 1;
-  background-color: #7f7f7f;
+  background-color: #344033;
 }
 
 .modal__header {
@@ -190,12 +193,6 @@ body {
   width: 100%;
 }
 
-@media (min-width: 1024px) {
-  .modal__form {
-    max-width: 1024px;
-    margin: 0 auto;
-  }
-}
 .inputWrapper {
   display: flex;
   flex-direction: column;
@@ -212,7 +209,8 @@ body {
   border: 0;
   outline: none;
   border-radius: 3px;
-  background-color: #efefef;
+  background-color: #587356;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .inputWrapper__inputTextArea {
@@ -224,7 +222,14 @@ body {
   border: 0;
   outline: none;
   border-radius: 3px;
-  background-color: #efefef;
+  background-color: #587356;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.inputWrapper__input::placeholder,
+.inputWrapper__inputTextArea::placeholder {
+  color: rgba(255, 255, 255, 0.87);
+  opacity: 0.6;
 }
 
 .modal__button {
@@ -233,6 +238,9 @@ body {
   border: 0;
   border-radius: 3px;
   font-size: 1rem;
+  cursor: pointer;
+  background-color: #54994D;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .listsContainer {
@@ -263,7 +271,7 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.28);
   position: relative;
   z-index: 0;
-  background-color: #c4c4c4;
+  background-color: #344033;
   list-style: none;
 }
 
@@ -279,21 +287,23 @@ body {
   max-height: 500px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.28);
-  background-color: #c4c4c4;
+  background-color: #344033;
   -webkit-tap-highlight-color: transparent;
   text-decoration: none;
-  color: black;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .costsList__iconNewList {
   display: block;
   height: 73px;
   width: 73px;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .costsList__headers {
   padding: 10px 10px 10px 10px;
   overflow-wrap: break-word;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .cardsCostsList {
@@ -308,7 +318,8 @@ body {
   border-radius: 10px;
   position: relative;
   overflow-y: scroll;
-  background-color: #ababab;
+  background-color: #495947;
+  color: rgba(255, 255, 255, 0.87);
   list-style: none;
 }
 
@@ -328,7 +339,9 @@ body {
   padding: 10px 0;
   border: 0;
   border-radius: 0 0 10px 10px;
-  background-color: #808080;
+  background-color: #54994D;
+  color: rgba(255, 255, 255, 0.87);
+  cursor: pointer;
 }
 
 .cardCost {
@@ -336,9 +349,10 @@ body {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px;
-  background-color: #939393;
+  background-color: #487345;
   overflow-wrap: break-word;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .cardCost__title {
@@ -358,6 +372,7 @@ body {
   left: 0;
   bottom: 45px;
   text-align: center;
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .totalCost__title {
@@ -416,8 +431,42 @@ body {
   border-radius: 3px;
   outline: none;
   font-weight: 700;
+  color: rgba(255, 255, 255, 0.87);
   text-transform: uppercase;
   cursor: pointer;
+}
+
+@media screen and (min-width: 1024px) {
+  .rootBody {
+    display: flex;
+  }
+
+  .navbarMenu {
+    width: 25vw;
+    position: relative;
+  }
+
+  .navbarMenu__overlay {
+    background: none;
+  }
+
+  .navbarMenu__optionsList {
+    max-width: 25vw;
+  }
+
+  .mainContent {
+    width: 100%;
+    overflow-x: scroll;
+  }
+
+  .listsContainer {
+    width: 100%;
+  }
+
+  .modal__form {
+    max-width: 900px;
+    margin: 0 auto;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -1,5 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
+$bg-color-navbar: #344033;
+$bg-color-menu: #344033;
+$bg-color-list: #344033;
+$bg-color-modal: #344033;
+$bg-color-app: #738C70;
+$bg-color-modal-overlay: rgba(115, 140, 112, 0.60);
+$bg-color-text-input: #587356;
+$bg-color-button: #54994D;
+$bg-color-inner-list: #495947;
+$bg-color-cost-item: #487345;
+
+$color-text: rgba(255, 255, 255, 0.87);
+
 * {
   margin: 0;
   padding: 0;
@@ -18,10 +31,11 @@ body {
 
 .rootBody {
   height: 100%;
+  background-color: $bg-color-app;
 }
 
 .lightText {
-  color: white;
+  color: $color-text;
 }
 
 .marginTop15 {
@@ -53,7 +67,7 @@ body {
   position: absolute;
   z-index: 0;
 
-  background-color: #7f7f7f;
+  background-color: $bg-color-navbar;
 }
 
 .navbar__titleWrapper {
@@ -71,6 +85,8 @@ body {
   width: 25px;
   height: 20px;
   z-index: 1;
+
+  cursor: pointer;
 }
 
 .menuButton__bar {
@@ -99,7 +115,7 @@ body {
 .navbarMenu__overlay {
   z-index: 1;
   height: 100%;
-  background-color: rgba(127, 127, 127, 0.6);
+  background-color: $bg-color-modal-overlay;
 }
 
 .navbarMenu__optionsList {
@@ -109,13 +125,14 @@ body {
   height: 100%;
   border-right: 1px solid #fff;
 
-  background-color: #7f7f7f;
+  background-color: $bg-color-navbar;
 }
 
 .navbarMenu__option {
   padding: 15px;
   border-bottom: 1px solid #fff;
-  color: #fff;
+  color: $color-text;
+  cursor: pointer;
 }
 
 .navbarMenu__closeButton {
@@ -196,7 +213,7 @@ body {
 
   z-index: 1;
 
-  background-color: #7f7f7f;
+  background-color: $bg-color-modal;
 }
 
 .modal__header {
@@ -205,13 +222,6 @@ body {
 
 .modal__headerTitle {
   width: 100%;
-}
-
-@media (min-width: 1024px) {
-  .modal__form {
-    max-width: 1024px;
-    margin: 0 auto;
-  }
 }
 
 .inputWrapper {
@@ -231,7 +241,8 @@ body {
   outline: none;
   border-radius: 3px;
 
-  background-color: #efefef;
+  background-color: $bg-color-text-input;
+  color: $color-text;
 }
 
 .inputWrapper__inputTextArea {
@@ -243,7 +254,14 @@ body {
   border: 0;
   outline: none;
   border-radius: 3px;
-  background-color: #efefef;
+  background-color: $bg-color-text-input;
+  color: $color-text;
+}
+
+.inputWrapper__input::placeholder,
+.inputWrapper__inputTextArea::placeholder {
+  color: $color-text;
+  opacity: 0.60;
 }
 
 .modal__button {
@@ -253,6 +271,9 @@ body {
   border-radius: 3px;
 
   font-size: 1rem;
+  cursor: pointer;
+  background-color: $bg-color-button;
+  color: $color-text;
 }
 
 .listsContainer {
@@ -287,7 +308,7 @@ body {
   position: relative;
   z-index: 0;
 
-  background-color: #c4c4c4;
+  background-color: $bg-color-list;
 
   list-style: none;
 }
@@ -308,21 +329,23 @@ body {
   border-radius: 10px;
 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.28);
-  background-color: #c4c4c4;
+  background-color: $bg-color-list;
   -webkit-tap-highlight-color: transparent;
   text-decoration: none;
-  color: black;
+  color: $color-text;
 }
 
 .costsList__iconNewList {
   display: block;
   height: 73px;
   width: 73px;
+  color: $color-text;
 }
 
 .costsList__headers {
   padding: 10px 10px 10px 10px;
   overflow-wrap: break-word;
+  color: $color-text;
 }
 
 .cardsCostsList {
@@ -340,7 +363,8 @@ body {
 
   overflow-y: scroll;
 
-  background-color: #ababab;
+  background-color: $bg-color-inner-list;
+  color: $color-text;
   list-style: none;
 }
 
@@ -361,7 +385,9 @@ body {
   border: 0;
   border-radius: 0 0 10px 10px;
 
-  background-color: #808080;
+  background-color: $bg-color-button;
+  color: $color-text;
+  cursor: pointer;
 }
 
 .cardCost {
@@ -370,9 +396,10 @@ body {
   margin-bottom: 10px;
 
   border-radius: 10px;
-  background-color: #939393;
+  background-color: $bg-color-cost-item;
   overflow-wrap: break-word;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.35);
+  color: $color-text;
 }
 
 .cardCost__title {
@@ -394,6 +421,7 @@ body {
   bottom: 45px;
 
   text-align: center;
+  color: $color-text;
 }
 
 .totalCost__title {
@@ -461,6 +489,45 @@ body {
   outline: none;
 
   font-weight: 700;
+  color: $color-text;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+@media screen and (min-width: 1024px) {
+  
+  .rootBody {
+    display: flex;
+  }
+
+  .navbarMenu {
+    width: 25vw;
+    position: relative;
+  }
+  
+  .navbarMenu__overlay {
+    background: none;
+  }
+
+  // .navbarMenu__
+
+  .navbarMenu__optionsList {
+    max-width: 25vw;
+  }
+
+  .mainContent {
+    width: 100%;
+    overflow-x: scroll;
+  }
+
+  .listsContainer {
+    width: 100%;
+  }
+
+  .modal__form {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+
 }
